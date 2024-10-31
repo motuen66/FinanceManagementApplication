@@ -27,5 +27,10 @@ namespace FinanceManagementApp
         {
             //UserDataGrid.ItemsSource = userService.getAllUsers();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
