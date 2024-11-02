@@ -1,4 +1,6 @@
-﻿using Services;
+﻿using FinanceManagementApp.Domain;
+using MaterialDesignThemes.Wpf;
+using Services;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,20 +19,6 @@ namespace FinanceManagementApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static UserService userService = new UserService();
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //UserDataGrid.ItemsSource = userService.getAllUsers();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }
