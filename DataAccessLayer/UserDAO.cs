@@ -9,10 +9,30 @@ namespace DataAccessLayer
 {
     public class UserDAO
     {
-        public static List<User> getAllUsers()
+        public static void CreateNewUser(User newUser)
         {
             using var context = new FinanceManagementApplicationContext();
-            return context.Users.ToList();
+            context.Users.Add(newUser);
+            context.SaveChanges();
+        }
+
+        public void UpdateUser(User newUser)
+        {
+
+        }
+
+        public static void DeleteUser(int id) 
+        {
+            using var context = new FinanceManagementApplicationContext();
+            User user = context.Users.FirstOrDefault(u => id == u.Id);
+            context.Users.Remove(user);
+            context.SaveChanges();
+        }
+
+        public static User? getUser(string username, string password)
+        {
+            using var context = new FinanceManagementApplicationContext(); 
+            return (context.Users.FirstOrDefault(u => username.Equals(u.Username) && password.Equals(u.Password)));
         }
     }
 }

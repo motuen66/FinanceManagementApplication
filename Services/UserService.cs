@@ -8,9 +8,23 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         public UserService() { }
-        public List<User> getAllUsers() => UserDAO.getAllUsers();
+
+        public void CreateUser(User user) => UserDAO.CreateNewUser(user);
+
+        public void DeleteUser(int id) => UserDAO.DeleteUser(id);
+
+
+        public User GetUser(string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
