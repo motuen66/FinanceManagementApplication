@@ -12,19 +12,31 @@ namespace Services
     {
         public UserService() { }
 
-        public void CreateUser(User user) => UserDAO.CreateNewUser(user);
+        public void CreateNewFinanceRecord(FinanceRecord financeRecord)
+            => FinanceRecordDAO.CreateNewFinanceRecord(financeRecord);
 
-        public void DeleteUser(int id) => UserDAO.DeleteUser(id);
+        public void CreateUser(User user) 
+            => UserDAO.CreateNewUser(user);
 
+        public void DeleteFinanceRecord(FinanceRecord financeRecord)
+            => FinanceRecordDAO.DeleteFinanceRecord(financeRecord);
 
-        public User GetUser(string userName, string password)
-        {
-            throw new NotImplementedException();
-        }
+        public void DeleteUser(int id) 
+            => UserDAO.DeleteUser(id);
 
-        public void UpdateUser(User user)
-        {
-            throw new NotImplementedException();
-        }
+        public FinanceRecord GetFinanceRecordByUserId(int id)
+            => FinanceRecordDAO.GetFinanceRecordByUserId(id);
+
+        public List<FinanceRecord> GetFinanceRecords()
+            => FinanceRecordDAO.GetFinanceRecords();
+
+        public User GetUser(string userName, string password) 
+            => UserDAO.getUser(userName, password);
+
+        public void UpdateFinanceRecord(FinanceRecord financeRecord)
+            => FinanceRecordDAO.UpdateFinanceRecord(financeRecord);
+
+        public void UpdateUser(User user) 
+            => UserDAO.UpdateUser(user);
     }
 }
