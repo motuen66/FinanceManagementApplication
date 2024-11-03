@@ -8,7 +8,7 @@
              xmlns:domain="clr-namespace:FinanceManagementApp.Domain"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Width="80" Background="#FFFCF3" HorizontalAlignment="Left">
+    <Grid Width="80" Background="#ECEAFF" HorizontalAlignment="Left">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -24,12 +24,14 @@
 
         <Viewbox Grid.Row="1" Width="80" VerticalAlignment="Top" Stretch="Uniform">
             <ListBox Grid.Row="1"
+                 x:Name="SidebarListBox"
                  ItemsSource="{Binding SampleList}"
+                 SelectionChanged="SidebarListBox_SelectionChanged"
                  SelectedIndex="0">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem"
                        BasedOn="{StaticResource MaterialDesign3.NavigationRailListBoxItem}">
-                        <Setter Property="Background" Value="#E6E4C0" />
+                        <Setter Property="Background" Value="#BFB7FF" />
                         <Setter Property="Foreground" Value="#48473A" />
                         <Setter Property="materialDesign:BadgedAssist.Badge" Value="{Binding Notification}" />
                         <Setter Property="materialDesign:BadgedAssist.BadgeBackground" Value="#930006" />
@@ -39,11 +41,9 @@
                         <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon" Value="{Binding UnselectedIcon}" />
                     </Style>
                 </ListBox.ItemContainerStyle>
-                <ListBox.Resources>
-                    <DataTemplate
-      DataType="{x:Type domain:SampleItem}">
-                        <TextBlock
-        Text="{Binding Title}" />
+                <ListBox.Resources >
+                    <DataTemplate DataType="{x:Type domain:SampleItem}">
+                        <TextBlock Text="{Binding Title}" />
                     </DataTemplate>
                 </ListBox.Resources>
             </ListBox>
