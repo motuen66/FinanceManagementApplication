@@ -13,5 +13,10 @@ namespace Services
         void DeleteUser(int id);
         void UpdateUser(User user);
         User GetUser(string userName, string password);
+        void CreateNewFinanceRecord(FinanceRecord financeRecord);
+        void UpdateFinanceRecord(FinanceRecord financeRecord);
+        void DeleteFinanceRecord(FinanceRecord financeRecord);
+        List<FinanceRecord> GetFinanceRecords();
+        FinanceRecord GetFinanceRecordByUserId(int id);
     }
 }

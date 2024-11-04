@@ -107,12 +107,14 @@ CREATE TABLE [IncomeTransaction] (
 
 CREATE TABLE [BudgetItem] (
 	[id] INT IDENTITY(1, 1),
+	[userId] INT,
 	[budgetName] NVARCHAR(50),
 	[limitAmount] INT,
 	[isOverBudget] BIT DEFAULT(0),
 	[isDelete] BIT DEFAULT(0),
 
-	CONSTRAINT PK_BudgetItem PRIMARY KEY ([id])
+	CONSTRAINT PK_BudgetItem PRIMARY KEY ([id]),
+	CONSTRAINT FK_BudgetItem_User FOREIGN KEY ([userId]) REFERENCES [User]([id]) ON DELETE CASCADE
 );
 
 CREATE TABLE [ExpenseTransaction] (
@@ -142,12 +144,14 @@ CREATE TABLE [SavingGoal] (
 );
 
 CREATE TABLE [SavingTransaction] (
+	[userId] INT,
 	[savingGoalId] INT,
 	[note] NVARCHAR(100),
 	[amount] INT NOT NULL,
 	[date] DATE DEFAULT CAST(GETDATE() AS DATE), 
 
-	CONSTRAINT FK_SavingTransaction_SavingGoal FOREIGN KEY ([savingGoalId]) REFERENCES [SavingGoal]([id])
+	CONSTRAINT FK_SavingTransaction_SavingGoal FOREIGN KEY ([savingGoalId]) REFERENCES [SavingGoal]([id]),
+	CONSTRAINT FK_SavingTransaction_User FOREIGN KEY ([userId]) REFERENCES [User]([id]) ON DELETE CASCADE,
 );
 /*
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
