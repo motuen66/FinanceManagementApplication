@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,14 @@ namespace DataAccessLayer
 {
     public class FinanceRecordDAO
     {
-        public static List<FinanceRecord> GetFinanceRecords()
+        public static List<FinanceRecord> GetFinanceRecords(int userId)
         {
             try
             {
                 var context = new FinanceManagementApplicationContext();
                 var FinanceRecords = context.FinanceRecords
                                     .Include(r => r.User)
+                                    .Where(r => r.UserId == userId)
                                     .ToList();
 
                 return FinanceRecords;
@@ -31,7 +33,7 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
+                using var context = new FinanceManagementApplicationContext();
                 context.FinanceRecords.Add(financeRecord);
                 context.SaveChanges();
             }
@@ -45,18 +47,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var FinanceRecordToUpdate = context.FinanceRecords.FirstOrDefault(
-                    r => r.UserId == financeRecord.UserId);
-                if (FinanceRecordToUpdate != null)
-                {
-                    context.FinanceRecords.Update(FinanceRecordToUpdate);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Record does not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.FinanceRecords.Update(financeRecord);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -68,18 +61,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var FinanceRecordToDelete = context.FinanceRecords.FirstOrDefault(
-                    r => r.UserId == financeRecord.UserId);
-                if (FinanceRecordToDelete != null)
-                {
-                    context.FinanceRecords.Remove(FinanceRecordToDelete);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Record does not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.FinanceRecords.Remove(financeRecord);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -27,14 +28,14 @@ namespace Services
         public SavingGoal GetSavingGoalById(int id)
             => SavingGoalDAO.GetSavingGoalById(id);
 
-        public List<SavingGoal> GetSavingGoals()
-            => SavingGoalDAO.GetSavingGoals();
+        public List<SavingGoal> GetSavingGoals(int userId)
+            => SavingGoalDAO.GetSavingGoals(userId);
 
         public SavingTransaction GetSavingTransactionById(int id)
             => SavingTransactionDAO.GetSavingTransactionById(id);
 
-        public List<SavingTransaction> GetSavingTransactions()
-            => SavingTransactionDAO.GetSavingTransactions();
+        public List<SavingTransaction> GetSavingTransactions(int userId)
+            => SavingTransactionDAO.GetSavingTransactions(userId);
 
         public void UpdateSavingGoal(SavingGoal savingGoal)
             => SavingGoalDAO.UpdateSavingGoal(savingGoal);
