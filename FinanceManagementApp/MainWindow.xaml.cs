@@ -27,7 +27,6 @@ namespace FinanceManagementApp
         {
             if (sender is UserSidebar sidebar && sidebar.SidebarListBox.SelectedItem is SampleItem selectedItem)
             {
-                // Xử lý theo từng mục
                 switch (selectedItem.Title)
                 {
                     case "Dashboard":
@@ -54,6 +53,5 @@ namespace FinanceManagementApp
                 }
             }
         }
-
     }
 }
