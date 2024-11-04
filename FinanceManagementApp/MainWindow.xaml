@@ -7,10 +7,13 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:domain="clr-namespace:FinanceManagementApp.Domain"
         xmlns:controls="clr-namespace:FinanceManagementApp"
+        WindowState="Maximized"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="NoResize"
         mc:Ignorable="d"
+
         Style="{StaticResource MaterialDesignWindow}"
-        Title="MainWindow" 
-        Height="600" Width="1000">
+        Title="MainWindow">
     <Grid Background="#F5F4FF">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -22,5 +25,6 @@
 
         <!-- ContentControl for dynamic content -->
         <ContentControl x:Name="MainContent" Grid.Column="1"/>
+        
     </Grid>
 </Window>
