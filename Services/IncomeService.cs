@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -29,12 +30,11 @@ namespace Services
 
         public List<IncomeSource> GetIncomeSources()
             => IncomeSourceDAO.GetIncomeSources();
-
         public IncomeTransaction GetIncomeTransactionById(int id)
             => IncomeTransactionDAO.GetIncomeTransactionById(id);
 
-        public List<IncomeTransaction> GetIncomeTransactions()
-            => IncomeTransactionDAO.GetIncomeTransactions();
+        public List<IncomeTransaction> GetIncomeTransactions(int userId)
+            => IncomeTransactionDAO.GetIncomeTransactions(userId);
 
         public void UpdateIncomeSource(IncomeSource incomeSource)
             => IncomeSourceDAO.UpdateIncomeSource(incomeSource);

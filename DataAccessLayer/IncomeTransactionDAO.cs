@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,15 @@ namespace DataAccessLayer
 {
     public class IncomeTransactionDAO
     {
-        public static List<IncomeTransaction> GetIncomeTransactions()
+        public static List<IncomeTransaction> GetIncomeTransactions(int userId)
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
+                using var context = new FinanceManagementApplicationContext();
                 var IncomeTransactions = context.IncomeTransactions
                                         .Include(t => t.User)
+                                        .Include(t => t.Source) 
+                                        .Where(t => t.UserId == userId)
                                         .ToList();
                 return IncomeTransactions;
             }
@@ -30,7 +33,7 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
+                using var context = new FinanceManagementApplicationContext();
                 context.IncomeTransactions.Add(incomeTransaction);
                 context.SaveChanges();
             }
@@ -44,18 +47,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var incomeTransactionToUpdate = context.IncomeTransactions.FirstOrDefault(
-                                                t => t.UserId == incomeTransaction.UserId);
-                if (incomeTransactionToUpdate != null)
-                {
-                    context.IncomeTransactions.Update(incomeTransactionToUpdate);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Income transaction does not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.IncomeTransactions.Update(incomeTransaction);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -67,18 +61,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var incomeTransactionToDelete = context.IncomeTransactions.FirstOrDefault(
-                                                t => t.UserId == incomeTransaction.UserId);
-                if (incomeTransactionToDelete != null)
-                {
-                    context.IncomeTransactions.Remove(incomeTransactionToDelete);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Income transaction does not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.IncomeTransactions.Remove(incomeTransaction);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -86,12 +71,12 @@ namespace DataAccessLayer
             }
         }
 
-        public static IncomeTransaction GetIncomeTransactionById(int id)
+        public static IncomeTransaction GetIncomeTransactionById(int userId)
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                return context.IncomeTransactions.FirstOrDefault(t => t.UserId == id);
+                using var context = new FinanceManagementApplicationContext();
+                return context.IncomeTransactions.FirstOrDefault(t => t.UserId == userId);
             }
             catch (Exception ex)
             {
