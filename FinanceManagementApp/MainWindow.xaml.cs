@@ -22,7 +22,16 @@ namespace FinanceManagementApp
     {
         public MainWindow()
         {
+            InitializeComponent();
         }
+
+        //private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    double width = this.ActualWidth;
+        //    double height = this.ActualHeight;
+        //    MessageBox.Show($"Width: {width}, Height: {height}");
+        //}
+
         private void OnSidebar_SelectionChanged(object sender, RoutedEventArgs e)
         {
             if (sender is UserSidebar sidebar && sidebar.SidebarListBox.SelectedItem is SampleItem selectedItem)
