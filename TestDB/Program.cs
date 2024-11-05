@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -25,11 +26,8 @@ namespace TestDB
             //{
             //    Console.WriteLine(expenseTransaction.Amount);
             //}
-            var incomeSources = SavingTransactionDAO.GetSavingTransactions();
-            foreach (var incomeSource in incomeSources)
-            {
-                Console.WriteLine(incomeSource.Amount);
-            }
+            var user = BudgetItemDAO.GetBudgetItems(3);
+
 
         }
     }

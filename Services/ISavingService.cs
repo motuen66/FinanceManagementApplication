@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,14 @@ namespace Services
         void CreateSavingGoal(SavingGoal savingGoal);
         void UpdateSavingGoal(SavingGoal savingGoal);
         void DeleteSavingGoal(SavingGoal savingGoal);
-        List<SavingGoal> GetSavingGoals();
+        List<SavingGoal> GetSavingGoals(int userId);
         SavingGoal GetSavingGoalById(int id);
 
         //function for saving transaction
         void CreateSavingTransaction(SavingTransaction savingTransaction);
         void UpdateSavingTransaction(SavingTransaction savingTransaction);
         void DeleteSavingTransaction(SavingTransaction savingTransaction);
-        List<SavingTransaction> GetSavingTransactions();
+        List<SavingTransaction> GetSavingTransactions(int userId);
         SavingTransaction GetSavingTransactionById(int id);
     }
 }

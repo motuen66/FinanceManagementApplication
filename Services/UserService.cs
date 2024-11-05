@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,8 @@ namespace Services
         public FinanceRecord GetFinanceRecordByUserId(int id)
             => FinanceRecordDAO.GetFinanceRecordByUserId(id);
 
-        public List<FinanceRecord> GetFinanceRecords()
-            => FinanceRecordDAO.GetFinanceRecords();
+        public List<FinanceRecord> GetFinanceRecords(int userId)
+            => FinanceRecordDAO.GetFinanceRecords(userId);
 
         public User GetUser(string userName, string password) 
             => UserDAO.getUser(userName, password);

@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.Identity.Client;
@@ -12,13 +13,16 @@ namespace DataAccessLayer
 {
     public class BudgetItemDAO
     {
-        public static List<BudgetItem> GetBudgetItems()
+        public static List<BudgetItem> GetBudgetItems(int userId)
         {
             var budgetItems = new List<BudgetItem>();
             try
             {
                 using var context = new FinanceManagementApplicationContext();
-                return budgetItems = context.BudgetItems.ToList();
+                budgetItems = context.BudgetItems
+                                    .Where(b => b.UserId == userId)
+                                    .ToList();
+                 return budgetItems;
             }
             catch (Exception ex)
             {
@@ -45,16 +49,8 @@ namespace DataAccessLayer
             try
             {
                 using var context = new FinanceManagementApplicationContext();
-                var BudgetToUpdate = context.BudgetItems.FirstOrDefault(
-                    b => b.Id == budget.Id);
-                if (BudgetToUpdate != null)
-                {
-                    context.BudgetItems.Update(BudgetToUpdate);
-                    context.SaveChanges();
-                } else
-                {
-                    throw new Exception("Budget is not exist");
-                }
+                context.BudgetItems.Update(budget);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -67,16 +63,8 @@ namespace DataAccessLayer
             try
             {
                 using var context = new FinanceManagementApplicationContext();
-                var BudgetToDelete = context.BudgetItems.FirstOrDefault(
-                    b => b.Id == budget.Id);
-                if (BudgetToDelete != null)
-                {
-                    context.BudgetItems.Remove(BudgetToDelete);
-                    context.SaveChanges();
-                } else
-                {
-                    throw new Exception("Budget is not exist");
-                }
+                context.BudgetItems.Remove(budget);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -84,12 +72,12 @@ namespace DataAccessLayer
             }
         }
 
-        public static BudgetItem GetBudgetItemById(int id)
+        public static BudgetItem GetBudgetItemById(int userId)
         {
             try
             {
                 using var context = new FinanceManagementApplicationContext();
-                var budget = context.BudgetItems.FirstOrDefault(b => b.Id == id);
+                var budget = context.BudgetItems.FirstOrDefault(b => b.UserId == userId);
 
                 return budget;
             }

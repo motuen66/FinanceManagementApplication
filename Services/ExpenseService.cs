@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -26,14 +27,14 @@ namespace Services
         public BudgetItem GetBudgetItemById(int id)
             => BudgetItemDAO.GetBudgetItemById(id);
 
-        public List<BudgetItem> GetBudgets()
-            => BudgetItemDAO.GetBudgetItems();
+        public List<BudgetItem> GetBudgets(int userId)
+            => BudgetItemDAO.GetBudgetItems(userId);
 
         public ExpenseTransaction GetExpenseTransactionById(int id)
             => ExpenseTransactionDAO.GetTransactionById(id);
 
-        public List<ExpenseTransaction> GetExpenseTransactions()
-            => ExpenseTransactionDAO.GetExpenseTransactions();
+        public List<ExpenseTransaction> GetExpenseTransactions(int userId)
+            => ExpenseTransactionDAO.GetExpenseTransactions(userId);
 
         public void UpdateBudget(BudgetItem budget)
             => BudgetItemDAO.UpdateBudget(budget);

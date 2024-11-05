@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
@@ -12,7 +13,7 @@ namespace DataAccessLayer
 {
     public class ExpenseTransactionDAO
     {
-        public static List<ExpenseTransaction> GetExpenseTransactions()
+        public static List<ExpenseTransaction> GetExpenseTransactions(int userId)
         {
             var ExpenseTransactions = new List<ExpenseTransaction>();
             try
@@ -21,6 +22,7 @@ namespace DataAccessLayer
                 return ExpenseTransactions = context.ExpenseTransactions
                                             .Include(e => e.Budget)
                                             .Include(e => e.User)
+                                            .Where(e => e.UserId == userId)
                                             .ToList();
 
             }
@@ -34,7 +36,7 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
+                using var context = new FinanceManagementApplicationContext();
                 context.ExpenseTransactions.Add(transaction);
                 context.SaveChanges();
             }
@@ -48,17 +50,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var TransactionToUpdate = context.ExpenseTransactions.FirstOrDefault(t => t.UserId == transaction.UserId);
-                if (TransactionToUpdate != null)
-                {
-                    context.ExpenseTransactions.Update(TransactionToUpdate);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Transaction does not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.ExpenseTransactions.Update(transaction);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -70,13 +64,9 @@ namespace DataAccessLayer
         { 
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var TransactionToDelete = context.ExpenseTransactions.FirstOrDefault(t => t.UserId == transaction.UserId);
-                if (TransactionToDelete != null)
-                {
-                    context.ExpenseTransactions.Remove(TransactionToDelete);
-                    context.SaveChanges();
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.ExpenseTransactions.Remove(transaction);
+                context.SaveChanges();
             } catch (Exception ex)
             {
                 throw new Exception(ex.Message);

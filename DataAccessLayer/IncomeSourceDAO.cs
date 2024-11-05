@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
+                using var context = new FinanceManagementApplicationContext();
                 context.IncomeSources.Add(incomeSource);
                 context.SaveChanges();
             }
@@ -42,17 +43,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var IncomeSourceToUpdate = context.IncomeSources.FirstOrDefault(
-                                            s => s.Id == incomeSource.Id);
-                if (IncomeSourceToUpdate != null)
-                {
-                    context.IncomeSources.Update(IncomeSourceToUpdate);
-                    context.SaveChanges();
-                } else
-                {
-                    throw new Exception("Income Source does not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.IncomeSources.Update(incomeSource);
+                context.SaveChanges();
             } catch (Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -63,19 +56,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var IncomeSourceToDelete = context.IncomeSources.FirstOrDefault(
-                                            s => s.Id == incomeSource.Id);
-
-                if(IncomeSourceToDelete != null)
-                {
-                    context.IncomeSources.Remove(incomeSource);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Income Source does not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.IncomeSources.Remove(incomeSource);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
