@@ -24,7 +24,6 @@ namespace DataAccessLayer
                 throw new Exception(ex.Message);
             }
         }
-
         public static void CreateNewIncomeSource(IncomeSource incomeSource)
         {
             try

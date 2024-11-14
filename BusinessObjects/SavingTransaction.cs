@@ -13,7 +13,7 @@ public partial class SavingTransaction
 
     public int Amount { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime? Date { get; set; }
 
     public virtual SavingGoal? SavingGoal { get; set; }
 

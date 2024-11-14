@@ -98,8 +98,8 @@ public partial class FinanceManagementApplicationContext : DbContext
                 .HasNoKey()
                 .ToTable("FinanceRecord");
 
-            entity.Property(e => e.From).HasColumnName("from");
-            entity.Property(e => e.To).HasColumnName("to");
+            entity.Property(e => e.Month).HasColumnName("month");
+            entity.Property(e => e.Year).HasColumnName("year");
             entity.Property(e => e.TotalExpense).HasColumnName("totalExpense");
             entity.Property(e => e.TotalIncome).HasColumnName("totalIncome");
             entity.Property(e => e.UserId).HasColumnName("userId");

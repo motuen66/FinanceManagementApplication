@@ -12,7 +12,7 @@ public partial class BudgetItem
 
     public string? BudgetName { get; set; }
 
-    public int? LimitAmount { get; set; }
+    public int LimitAmount { get; set; }
 
     public bool? IsOverBudget { get; set; }
 
