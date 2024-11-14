@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -30,11 +29,21 @@ namespace Services
         public List<BudgetItem> GetBudgets(int userId)
             => BudgetItemDAO.GetBudgetItems(userId);
 
+        public List<BudgetItem> GetBudgets()
+        {
+            throw new NotImplementedException();
+        }
+
         public ExpenseTransaction GetExpenseTransactionById(int id)
             => ExpenseTransactionDAO.GetTransactionById(id);
 
         public List<ExpenseTransaction> GetExpenseTransactions(int userId)
             => ExpenseTransactionDAO.GetExpenseTransactions(userId);
+
+        public List<ExpenseTransaction> GetExpenseTransactions()
+        {
+            throw new NotImplementedException();
+        }
 
         public void UpdateBudget(BudgetItem budget)
             => BudgetItemDAO.UpdateBudget(budget);

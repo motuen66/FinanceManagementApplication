@@ -25,7 +25,7 @@ namespace BusinessObjects
 
         public string FormatMoney(int money)
         {
-            return money.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) + ".000";
+            return money.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) + ".000VND";
         }
     }
 }

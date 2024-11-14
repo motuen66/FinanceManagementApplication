@@ -1,5 +1,5 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
+using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,6 @@ namespace DataAccessLayer
                 throw new Exception(ex.Message);
             }
         }
-
         public static void CreateNewIncomeSource(IncomeSource incomeSource)
         {
             try

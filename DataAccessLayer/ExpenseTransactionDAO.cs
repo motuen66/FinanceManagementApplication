@@ -1,5 +1,5 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
+using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
@@ -15,22 +15,14 @@ namespace DataAccessLayer
     {
         public static List<ExpenseTransaction> GetExpenseTransactions(int userId)
         {
-            var ExpenseTransactions = new List<ExpenseTransaction>();
-            try
-            {
-                using var context = new FinanceManagementApplicationContext();
-                return ExpenseTransactions = context.ExpenseTransactions
-                                            .Include(e => e.Budget)
-                                            .Include(e => e.User)
-                                            .Where(e => e.UserId == userId)
-                                            .ToList();
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            using var context = new FinanceManagementApplicationContext();
+            return context.ExpenseTransactions
+                          .Include(e => e.Budget)
+                          .Include(e => e.User)
+                          .Where(e => e.UserId == userId)
+                          .ToList();
         }
+
 
         public static void CreateNewTransaction(ExpenseTransaction transaction)
         {
