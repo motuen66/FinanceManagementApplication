@@ -9,7 +9,7 @@
         xmlns:controls="clr-namespace:FinanceManagementApp"
         WindowState="Maximized"
         WindowStyle="SingleBorderWindow"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         mc:Ignorable="d"
 
         Style="{StaticResource MaterialDesignWindow}"
