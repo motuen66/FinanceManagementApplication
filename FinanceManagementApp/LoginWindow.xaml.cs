@@ -26,6 +26,7 @@ namespace FinanceManagementApp
         public LoginWindow()
         {
             InitializeComponent();
+            _userService = new UserService();
         }
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
@@ -189,5 +190,3 @@ namespace FinanceManagementApp
         }
     }
 }
-    
-

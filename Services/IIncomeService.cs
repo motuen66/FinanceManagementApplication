@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Services
         void CreateIncomeTransaction(IncomeTransaction incomeTransaction);
         void UpdateIncomeTransaction(IncomeTransaction incomeTransaction);
         void DeleteIncomeTransaction(IncomeTransaction incomeTransaction);
-        List<IncomeTransaction> GetIncomeTransactions();
+        List<IncomeTransaction> GetIncomeTransactions(int userId);
         IncomeTransaction GetIncomeTransactionById(int id);
     }
 }

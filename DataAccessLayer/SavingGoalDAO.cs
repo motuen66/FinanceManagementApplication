@@ -1,8 +1,10 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,13 +12,14 @@ namespace DataAccessLayer
 {
     public class SavingGoalDAO
     {
-        public static List<SavingGoal> GetSavingGoals()
+        public static List<SavingGoal> GetSavingGoals(int userId)
         {
             try
             {
                 using var context = new FinanceManagementApplicationContext();
                 var savingGoals = context.SavingGoals
                                 .Include(sg => sg.User)
+                                .Where(sg => sg.UserId == userId)
                                 .ToList();
                 return savingGoals;
             }
@@ -30,7 +33,7 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
+                using var context = new FinanceManagementApplicationContext();
                 context.SavingGoals.Add(savingGoal);
                 context.SaveChanges();
             }
@@ -44,18 +47,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var SavingGoalToUpdate = context.SavingGoals.FirstOrDefault(
-                                        sg => sg.Id == savingGoal.Id);
-                if (SavingGoalToUpdate != null)
-                {
-                    context.SavingGoals.Update(SavingGoalToUpdate);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Saving Goal is not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.SavingGoals.Update(savingGoal);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -67,18 +61,9 @@ namespace DataAccessLayer
         {
             try
             {
-                var context = new FinanceManagementApplicationContext();
-                var SavingGoalToRemove = context.SavingGoals.FirstOrDefault(
-                                        sg => sg.Id == savingGoal.Id);
-                if (SavingGoalToRemove != null)
-                {
-                    context.SavingGoals.Remove(SavingGoalToRemove);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Saving Goal is not exist");
-                }
+                using var context = new FinanceManagementApplicationContext();
+                context.SavingGoals.Remove(savingGoal);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -86,13 +71,13 @@ namespace DataAccessLayer
             }
         }
 
-        public static SavingGoal GetSavingGoalById(int id)
+        public static SavingGoal GetSavingGoalById(int userId)
         {
             try
             {
                 var context = new FinanceManagementApplicationContext();
                 var SavingGoal = context.SavingGoals.FirstOrDefault(
-                                sg => sg.Id == id);
+                                sg => sg.UserId == userId);
 
                 return SavingGoal;
             }

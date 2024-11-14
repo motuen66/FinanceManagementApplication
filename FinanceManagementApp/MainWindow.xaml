@@ -9,9 +9,8 @@
         xmlns:controls="clr-namespace:FinanceManagementApp"
         WindowState="Maximized"
         WindowStyle="SingleBorderWindow"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         mc:Ignorable="d"
-
         Style="{StaticResource MaterialDesignWindow}"
         Title="MainWindow">
     <Grid Background="#F5F4FF">

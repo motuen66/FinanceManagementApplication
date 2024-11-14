@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Services
         void CreateNewFinanceRecord(FinanceRecord financeRecord);
         void UpdateFinanceRecord(FinanceRecord financeRecord);
         void DeleteFinanceRecord(FinanceRecord financeRecord);
-        List<FinanceRecord> GetFinanceRecords();
+        List<FinanceRecord> GetFinanceRecords(int userId);
         FinanceRecord GetFinanceRecordByUserId(int id);
     }
 }
