@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FinanceManagementApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:domain="clr-namespace:FinanceManagementApp.Domain"
+             xmlns:controls="clr-namespace:FinanceManagementApp"
              mc:Ignorable="d" 
              d:DesignHeight="848" d:DesignWidth="1496">
     <Grid>
@@ -20,5 +22,145 @@
         </Grid.Resources>
 
         <local:UserHeader x:Name="userHeaderControl" Grid.ColumnSpan="2"/>
+
+        <!-- Định nghĩa các hàng -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="80" />
+            <!-- Row đầu tiên có chiều cao tự động -->
+            <RowDefinition Height="220" />
+            <!-- Row thứ hai cao 300 -->
+            <RowDefinition Height="360" />
+            <!-- Row thứ ba cao 300 -->
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <TextBlock Text="Header Content" Grid.ColumnSpan="2" 
+     HorizontalAlignment="Center" VerticalAlignment="Center" 
+     FontSize="20" FontWeight="Bold" Grid.Column="1" Height="27" Width="148" />
+        </Grid>
+        <Grid Grid.Row="1">
+            <!-- Định nghĩa các cột cho Row thứ hai (4 cột) -->
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="*"/>
+                <!-- 4 cột bằng nhau trong Row thứ hai -->
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!-- Nội dung cho Row đầu tiên -->
+
+
+            <!-- Nội dung cho Row thứ hai -->
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="20">
+                <materialDesign:Flipper materialDesign:ElevationAssist.Elevation="Dp0"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Width="320" Height="200">
+                    <!-- Sử dụng Clip để bo tròn góc -->
+                    <materialDesign:Flipper.Clip>
+                        <RectangleGeometry Rect="0,0,320,200" RadiusX="20" RadiusY="20" />
+                    </materialDesign:Flipper.Clip>
+
+                    <materialDesign:Flipper.FrontContent>
+                        <Border Background="#D6D2FF">
+                            <Grid Width="320" Height="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="160" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock Text="123.00$" FontSize="40"/>
+                                    </StackPanel>
+                                    <StackPanel VerticalAlignment="Top" Margin="10,0,79,0" Height="44">
+                                        <TextBlock Text="Total balance" FontSize="30" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                    <StackPanel VerticalAlignment="Top" Margin="44,119,44,0" Height="29">
+                                        <TextBlock Text="This is your total balance" FontSize="18" FontWeight="Light"/>
+                                    </StackPanel>
+                                </Grid>
+                                <ProgressBar IsIndeterminate="True" Margin="0,150,0,6"/>
+                                <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="36" Width="72">
+                                    <Button Margin="0,4,0,0" Command="{x:Static materialDesign:Flipper.FlipCommand}" Content="MORE"
+                                Style="{StaticResource MaterialDesignFlatButton}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </materialDesign:Flipper.FrontContent>
+
+                    <materialDesign:Flipper.BackContent>
+                        <Border Background="#D6D2FF">
+                            <Grid Width="320" Height="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <materialDesign:ColorZone Padding="6" CornerRadius="20" Mode="SecondaryLight">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button HorizontalAlignment="Left" Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}">
+                                            <materialDesign:PackIcon HorizontalAlignment="Right" Kind="ArrowLeft" />
+                                        </Button>
+                                        <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Balance Details"/>
+                                    </StackPanel>
+                                </materialDesign:ColorZone>
+                                <Grid Grid.Row="1" Width="172" Margin="0,6,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+
+                                        <TextBlock Text="vs last month" FontSize="18" FontWeight="Light"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Name="EditNote" Margin="0,10,0,0" materialDesign:HintAssist.Hint="Note"
+                                 materialDesign:HintAssist.IsFloating="True"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </materialDesign:Flipper.BackContent>
+                </materialDesign:Flipper>
+            </Border>
+
+            <TextBlock Text="Column 2 Content" Grid.Row="1" Grid.Column="1" 
+HorizontalAlignment="Center" VerticalAlignment="Center" 
+Background="LightGray" Padding="10" Height="36" Width="116"/>
+            <TextBlock Text="Column 3 Content" Grid.Row="1" Grid.Column="2" 
+HorizontalAlignment="Center" VerticalAlignment="Center" 
+Background="LightGray" Padding="10" Height="36" Width="116"/>
+            <TextBlock Text="Column 4 Content" Grid.Row="1" Grid.Column="3" 
+HorizontalAlignment="Center" VerticalAlignment="Center" 
+Background="LightGray" Padding="10" Height="36" Width="116"/>
+        </Grid>
+
+
+        <!-- Grid nội bộ cho Row thứ ba -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <!-- Cột bên trái chiếm 3/4 chiều rộng -->
+                <ColumnDefinition Width="2*" />
+                <!-- Cột bên phải chiếm 1/4 chiều rộng -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Nội dung cho cột bên trái của Row thứ ba -->
+            <TextBlock Text="Main Content (Left Column)" Grid.Column="0" 
+            HorizontalAlignment="Center" VerticalAlignment="Center" 
+            Background="LightBlue" Padding="10" FontSize="16"/>
+
+            <!-- Grid nội bộ cho cột bên phải của Row thứ ba -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <!-- 2 hàng bằng nhau trong cột bên phải -->
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Sub Content 1 (Right Column)" Grid.Row="0" 
+                HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Background="LightCoral" Padding="10" FontSize="14"/>
+                <TextBlock Text="Sub Content 2 (Right Column)" Grid.Row="1" 
+                HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Background="LightCoral" Padding="10" FontSize="14"/>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
