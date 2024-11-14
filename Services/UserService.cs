@@ -38,5 +38,11 @@ namespace Services
 
         public void UpdateUser(User user) 
             => UserDAO.UpdateUser(user);
+
+        public void AddBalance(IncomeTransaction transaction) 
+            => UserDAO.AddBalance(transaction);
+
+        public User GetUserById(int id)
+            => UserDAO.getUserById(id);
     }
 }

@@ -126,17 +126,17 @@ public partial class FinanceManagementApplicationContext : DbContext
 
         modelBuilder.Entity<IncomeTransaction>(entity =>
         {
+            entity.Property(e => e.Id).HasColumnName("id");
             entity
-                .HasNoKey()
                 .ToTable("IncomeTransaction", tb =>
                 {
                     tb.HasTrigger("trg_UpdateBalanceAfterIncomeDelete");
                     tb.HasTrigger("trg_UpdateBalanceAfterIncomeInsert");
                 });
 
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Amount).HasColumnName("amount");
             entity.Property(e => e.Date).HasColumnName("date");
-            entity.Property(e => e.SourceId).HasColumnName("sourceId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
             entity.HasOne(d => d.Source).WithMany()

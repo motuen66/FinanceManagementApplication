@@ -18,5 +18,8 @@ namespace Services
         void DeleteFinanceRecord(FinanceRecord financeRecord);
         List<FinanceRecord> GetFinanceRecords();
         FinanceRecord GetFinanceRecordByUserId(int id);
+        void AddBalance(IncomeTransaction transaction);
+
+        User GetUserById(int id);
     }
 }

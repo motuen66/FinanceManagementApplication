@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,5 +52,26 @@ namespace DataAccessLayer
             using var context = new FinanceManagementApplicationContext(); 
             return (context.Users.FirstOrDefault(u => username.Equals(u.Username) && password.Equals(u.Password)));
         }
+        public static User? getUserById(int id)
+        {
+            using var context = new FinanceManagementApplicationContext();
+            return (context.Users.FirstOrDefault(u => id.Equals(u.Id) ));
+        }
+
+        public static void AddBalance(IncomeTransaction transaction)
+        {
+            try
+            {
+                using var context = new FinanceManagementApplicationContext();
+                var user = context.IncomeTransactions.Add(transaction);
+
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
     }
 }
