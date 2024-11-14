@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessObjects.Models;
+namespace DataAccessLayer;
 
 public partial class FinanceManagementApplicationContext : DbContext
 {
