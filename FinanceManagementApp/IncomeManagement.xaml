@@ -4,9 +4,170 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FinanceManagementApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
+             
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="Income Content" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <materialDesign:DialogHost
+DialogClosing="Sample1_DialogHost_OnDialogClosing"
+DialogTheme="Inherit">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="16">
+                    <TextBlock
+            Text="Add a New Income Transaction"
+            FontWeight="Bold"
+            FontSize="16"
+            Foreground="#8470FF"
+            Margin="0,0,0,10"
+            TextAlignment="Center" />
+
+                    <TextBox  x:Name="txtAmount" Margin="0,8,0,0" Width="350" HorizontalAlignment="Left" VerticalAlignment="Center" materialDesign:HintAssist.Hint="Amount" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                    
+                    <TextBox
+            x:Name="txtDescription"
+            Margin="0,8,0,0"
+            Width="350"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            materialDesign:HintAssist.Hint="Note"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                    <!-- Date Picker -->
+                    <DatePicker
+            x:Name="dpTransactionDate"
+            Width="350"
+            Margin="0,8,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            materialDesign:HintAssist.Hint="Transaction Date"
+            Style="{StaticResource MaterialDesignFloatingHintDatePicker}">
+                        <DatePicker.Resources>
+                            <Style
+                    x:Key="CustomCalendarDayButton"
+                    TargetType="CalendarDayButton"
+                    BasedOn="{StaticResource MaterialDesignCalendarDayButton}">
+                                <Setter Property="materialDesign:CalendarAssist.SelectionColor" Value="#8470FF" />
+                                <Setter Property="materialDesign:CalendarAssist.SelectionForegroundColor" Value="#BFB7FF" />
+                            </Style>
+                            <Style
+                    x:Key="CustomCalendarButton"
+                    TargetType="CalendarButton"
+                    BasedOn="{StaticResource MaterialDesignCalendarButton}">
+                                <Setter Property="materialDesign:CalendarAssist.SelectionColor" Value="#8470FF" />
+                                <Setter Property="materialDesign:CalendarAssist.SelectionForegroundColor" Value="White" />
+                            </Style>
+                            <Style
+                    x:Key="CustomCalendar"
+                    TargetType="{x:Type Calendar}"
+                    BasedOn="{StaticResource MaterialDesignDatePickerCalendarPortrait}">
+                                <Setter Property="Background" Value="#F5F4FF" />
+                                <Setter Property="CalendarButtonStyle" Value="{StaticResource CustomCalendarButton}" />
+                                <Setter Property="CalendarDayButtonStyle" Value="{StaticResource CustomCalendarDayButton}" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="materialDesign:CalendarAssist.HeaderBackground" Value="#8470FF" />
+                                <Setter Property="materialDesign:CalendarAssist.HeaderForeground" Value="Black" />
+                            </Style>
+                            <Style
+                    TargetType="DatePicker"
+                    BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+                                <Setter Property="CalendarStyle" Value="{StaticResource CustomCalendar}" />
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+
+                    <!-- Action Buttons -->
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                Margin="0,8,8,0"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Content="ACCEPT"
+                IsDefault="True"
+                Click="btnCreateIncome"            
+                Style="{StaticResource MaterialDesignFlatButton}">
+                            <Button.CommandParameter>
+                                <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">True</system:Boolean>
+                            </Button.CommandParameter>
+                        </Button>
+                        <Button
+                Margin="0,8,8,0"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Content="CANCEL"
+                IsCancel="True"
+                Style="{StaticResource MaterialDesignFlatButton}">
+                            <Button.CommandParameter>
+                                <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">False</system:Boolean>
+                            </Button.CommandParameter>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+
+            <!-- Trigger Button -->
+            <Border MinHeight="256" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1" ClipToBounds="True">
+                <Grid Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button
+            Grid.Row="0"
+            Margin="0,88,127,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Background="#8470FF"
+            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+            Content="{materialDesign:PackIcon Kind=Plus, Size=22}"
+            Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
+            BorderBrush="#FF8470FF"
+            Foreground="White" />
+
+                </Grid>
+            </Border>
+        </materialDesign:DialogHost>
+
+
+
+        <DataGrid
+        AutoGenerateColumns="False"
+             x:Name="dgIncomeTransactions" 
+            
+        CanUserAddRows="False"
+        HeadersVisibility="All"
+        ItemsSource="{Binding IncomeTransaction}"
+        Margin="101,176,116,52"
+   RowBackground="White" 
+    AlternatingRowBackground="White" 
+    Background="White"
+            SelectionMode="Extended"
+  SelectionUnit="Cell"
+           
+        Width="Auto">
+            <DataGrid.Resources>
+
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#ECEAFF" />
+                    <Setter Property="Foreground" Value="#8470FF" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="Height" Value="40" />
+                    <Setter Property="BorderBrush" Value="#ECEAFF"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <!-- Điều chỉnh khoảng cách xung quanh chữ -->
+                    <Setter Property="Padding" Value="20,0,10,0" />
+
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="1*"  IsReadOnly="True" />
+                <DataGridTextColumn Header="Ammount" Binding="{Binding Amount}" Width="1*" IsReadOnly="True" />
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="1*" IsReadOnly="True" />
+                <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="1*" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
 </UserControl>
