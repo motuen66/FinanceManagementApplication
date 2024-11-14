@@ -109,6 +109,7 @@
                     FontWeight="Bold"
                     FontSize="16"
                     Margin="0,0,0,10"
+                    Visibility="Collapsed"
                     TextAlignment="Center" />
 
                     <!-- Action Buttons for Delete Confirmation -->
@@ -125,7 +126,7 @@
         </materialDesign:DialogHost>
 
         <!-- ADD DIALOG -->
-            <materialDesign:DialogHost
+        <materialDesign:DialogHost
     DialogClosing="OnDialogClosing"
     DialogTheme="Inherit" x:Name="AddDialog">
             <materialDesign:DialogHost.DialogContent>
@@ -233,7 +234,7 @@
                     </StackPanel>
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
-                
+
 
             <!-- Trigger Button -->
             <Border MinHeight="256" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1" ClipToBounds="True">
@@ -278,6 +279,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     IsEnabled="False"
+                    Visibility="Collapsed"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
                     <!-- Budget Selection -->
@@ -390,6 +392,7 @@
                 VerticalAlignment="Top"
                 Background="#8470FF"
                 Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                CommandTarget="{Binding ElementName=AddDialog}" 
                 Content="{materialDesign:PackIcon Kind=Plus, Size=22}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
                 BorderBrush="#FF8470FF"

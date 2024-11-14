@@ -71,6 +71,7 @@ namespace DataAccessLayer
                              Date = t.Date,
                              Note = t.Note
                          })
+                         .OrderByDescending(t => t.Date)
                          .ToList();
         }
     }
