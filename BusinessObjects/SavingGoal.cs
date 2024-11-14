@@ -23,5 +23,21 @@ public partial class SavingGoal
 
     public bool? IsDelete { get; set; }
 
+    public double ProgressGoalPercentage
+    {
+        get
+        {
+            return (double)(CurrentAmount / GoalAmount * 100);
+        }
+    }
+
+    public string LeftMoneyGoal
+    {
+        get
+        {
+            return ((int)(GoalAmount - CurrentAmount)).ToString();
+        }
+    }
+
     public virtual User? User { get; set; }
 }

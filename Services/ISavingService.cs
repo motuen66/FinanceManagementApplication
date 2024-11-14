@@ -16,6 +16,9 @@ namespace Services
         void DeleteSavingGoal(SavingGoal savingGoal);
         List<SavingGoal> GetSavingGoals(int userId);
         SavingGoal GetSavingGoalById(int id);
+        (List<string> labels, List<double> series) Labels();
+
+        List<MonthlyExpense> GetMonthlyExpenses(int userId);
 
         //function for saving transaction
         void CreateSavingTransaction(SavingTransaction savingTransaction);

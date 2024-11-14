@@ -12,9 +12,9 @@
     <Grid>
         <Grid Margin="10,0,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.5*"/>
-                <RowDefinition Height="1.2*"/>
-                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="7*"/>
             </Grid.RowDefinitions>
@@ -74,7 +74,15 @@
                 <Grid Grid.Column="1">
                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="White" BorderBrush="Gray"
                         Margin="219,5,59,5" Background="#8470FF"
-                        materialDesign:ButtonAssist.CornerRadius="25" Height="56">
+                        materialDesign:ButtonAssist.CornerRadius="25" Height="56" RenderTransformOrigin="0.5,0.5">
+                        <Button.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="0.097"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Button.RenderTransform>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                             <materialDesign:PackIcon Kind="Plus"/>
                             <TextBlock Text="Add New Goal" VerticalAlignment="Center" TextAlignment="Right" FontSize="16" FontWeight="DemiBold" Width="138"/>
@@ -82,12 +90,11 @@
                     </Button>
                 </Grid>
             </Grid>
-
             <Grid Grid.Row="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#343438" BorderBrush="Gray"
-                        Background="{x:Null}" Margin="0,0,20,0"
-                        materialDesign:ButtonAssist.CornerRadius="25" Width="158" Height="56">
+             Background="{x:Null}" Margin="0,0,20,0"
+             materialDesign:ButtonAssist.CornerRadius="25" Width="158" Height="56">
                         <ComboBox HorizontalAlignment="Center" Width="117" materialDesign:HintAssist.Hint="Status">
                             <ComboBoxItem>
                                 <TextBlock Text="Status1"/>
@@ -99,8 +106,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#343438" BorderBrush="Gray"
-                        Background="{x:Null}" Margin="0,0,20,0"
-                        materialDesign:ButtonAssist.CornerRadius="25" Width="158" Height="56">
+             Background="{x:Null}" Margin="0,0,20,0"
+             materialDesign:ButtonAssist.CornerRadius="25" Width="158" Height="56">
                         <ComboBox HorizontalAlignment="Center" Width="117" materialDesign:HintAssist.Hint="Amount">
                             <ComboBoxItem>
                                 <TextBlock Text="Amount1"/>
@@ -111,8 +118,8 @@
                         </ComboBox>
                     </Button>
                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#8470FF" BorderBrush="{x:Null}"
-                        Background="{x:Null}" Margin="0,0,20,0" 
-                        materialDesign:ButtonAssist.CornerRadius="25" Width="150" Height="56">
+             Background="{x:Null}" Margin="0,0,20,0" 
+             materialDesign:ButtonAssist.CornerRadius="25" Width="150" Height="56">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                             <materialDesign:PackIcon Kind="Restore"/>
                             <TextBlock Text="Reset all" VerticalAlignment="Center" TextAlignment="Right" FontSize="16" FontWeight="DemiBold" Width="77"/>
@@ -122,186 +129,68 @@
             </Grid>
 
             <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical">
+                        <ItemsControl x:Name="isGoal" Margin="42,0,54,0">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
 
-                <Grid Grid.Column="0">
-                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="280">
-                        <materialDesign:Card UniformCornerRadius="15" Background="#F5F4FF" BorderBrush="Gray" Width="270">
-                            <StackPanel Orientation="Vertical">
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                                            <TextBlock x:Name="txtGoalName" Text="MacBook Pro" FontWeight="Bold" FontSize="18"
-                                                        Height="24" Width="218"/>
-                                            <TextBlock x:Name="txtDueDate" Text="Due Date - 7 Oct 2024" FontWeight="DemiBold" Foreground="Gray"/>
-                                        </StackPanel>
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Height="30" Width="30" 
-                                            Foreground="#8470FF" Background="{x:Null}" BorderBrush="#D0D0D4">
-                                            <materialDesign:PackIcon Kind="PenMinus" Height="25" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="280" Margin="0, 10">
+                                        <materialDesign:Card UniformCornerRadius="15" Background="#F5F4FF" BorderBrush="Gray" Width="270">
+                                            <StackPanel Orientation="Vertical">
+                                                <Grid>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
+                                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                                                            <TextBlock  Text="{Binding Title}" FontWeight="Bold" FontSize="18"
+                                                                Height="24" Width="218"/>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="Due Date - " FontWeight="DemiBold" Foreground="Gray"/>
+                                                                <TextBlock Text="{Binding GoalDate}" FontWeight="DemiBold" Foreground="Gray"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Height="30" Width="30" 
+                                                            Foreground="#8470FF" Background="{x:Null}" BorderBrush="#D0D0D4">
+                                                            <materialDesign:PackIcon Kind="PenMinus" Height="25" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
 
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Margin="10">
-                                        <TextBlock x:Name="txtMoneyBeforeDot" Text="$412" Foreground="Black" FontSize="25" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                        <TextBlock x:Name="txtMoneyAfterDot" Text=".50" Foreground="#D0D0D4" FontSize="25" FontWeight="DemiBold" VerticalAlignment="Bottom"/>
-                                        <TextBlock x:Name="txtMoney" Text="/$1650" Foreground="#8470FF" FontSize="12" VerticalAlignment="Bottom" 
-                                        FontWeight="DemiBold"/>
-                                    </StackPanel>
-                                </Grid>
+                                                <Grid>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Margin="10">
+                                                        <TextBlock x:Name="txtcurrentMoney" Text="{Binding CurrentAmount}" Foreground="Black" FontSize="25" FontWeight="Bold" VerticalAlignment="Bottom"/>
+                                                        <TextBlock Text="đ" Foreground="Black" FontSize="25" FontWeight="Bold" VerticalAlignment="Bottom"/>
+                                                        <TextBlock Text="/" Foreground="#8470FF" FontSize="12" VerticalAlignment="Bottom" FontWeight="DemiBold"/>
+                                                        <TextBlock x:Name="txtMoney" Text="{Binding GoalAmount}" Foreground="#8470FF" FontSize="12" VerticalAlignment="Bottom" FontWeight="DemiBold"/>
+                                                        <TextBlock Text="đ" Foreground="#8470FF" FontSize="12" VerticalAlignment="Bottom" FontWeight="DemiBold"/>
+                                                    </StackPanel>
+                                                </Grid>
 
-                                <Grid Margin="10">
-                                    <StackPanel Orientation="Vertical">
-                                        <ProgressBar Name="progressBar" Height="25" Width="250" Minimum="0" Maximum="100"  Margin="0,10,0,10"
-                                                        Value="25" Foreground="#8470FF" Background="LightGray" HorizontalAlignment="Center"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Left to complete the goal"  FontSize="10" Foreground="Gray" FontWeight="DemiBold" Width="209"/>
-                                            <TextBlock HorizontalAlignment="Right" x:Name="txtLeftGoal" Text="$1237.50" FontSize="10" Foreground="#343438" FontWeight="DemiBold"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </materialDesign:Card>
-                    </WrapPanel>
-                </Grid>
-
-                <Grid Grid.Column="1">
-                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="280">
-                        <materialDesign:Card UniformCornerRadius="15" Background="#F5F4FF" BorderBrush="Gray" Width="270">
-                            <StackPanel Orientation="Vertical">
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                                            <TextBlock x:Name="txtGoalName1" Text="New Car" FontWeight="Bold" FontSize="18"
-                                    Height="24" Width="218"/>
-                                            <TextBlock x:Name="txtDueDate1" Text="Due Date - 25 Oct 2025" FontWeight="DemiBold" Foreground="Gray"/>
-                                        </StackPanel>
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Height="30" Width="30" 
-                                            Foreground="#8470FF" Background="{x:Null}" BorderBrush="#D0D0D4">
-                                            <materialDesign:PackIcon Kind="PenMinus" Height="25" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Margin="10">
-                                        <TextBlock x:Name="txtMoneyBeforeDot1" Text="$25000" Foreground="Black" FontSize="25" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                        <TextBlock x:Name="txtMoneyAfterDot1" Text=".50" Foreground="#D0D0D4" FontSize="25" FontWeight="DemiBold" VerticalAlignment="Bottom"/>
-                                        <TextBlock x:Name="txtMoney1" Text="/$60000" Foreground="#8470FF" FontSize="12" VerticalAlignment="Bottom" 
-                                        FontWeight="DemiBold"/>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Grid Margin="10">
-                                    <StackPanel Orientation="Vertical">
-                                        <ProgressBar Name="progressBar1" Height="25" Width="250" Minimum="0" Maximum="100"  Margin="0,10,0,10"
-                                    Value="42" Foreground="#8470FF" Background="LightGray" HorizontalAlignment="Center"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Left to complete the goal"  FontSize="10" Foreground="Gray" FontWeight="DemiBold" Width="202"/>
-                                            <TextBlock HorizontalAlignment="Right" x:Name="txtLeftGoal1" Text="$34999.50" FontSize="10" Foreground="#343438" FontWeight="DemiBold"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </materialDesign:Card>
-                    </WrapPanel>
-                </Grid>
-
-                <Grid Grid.Column="2">
-                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="280">
-                        <materialDesign:Card UniformCornerRadius="15" Background="#F5F4FF" BorderBrush="Gray" Width="270">
-                            <StackPanel Orientation="Vertical">
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                                            <TextBlock x:Name="txtGoalName2" Text="New House" FontWeight="Bold" FontSize="18"
-                                            Height="24" Width="218"/>
-                                            <TextBlock x:Name="txtDueDate2" Text="Due Date - 20 Apr 2027" FontWeight="DemiBold" Foreground="Gray"/>
-                                        </StackPanel>
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Height="30" Width="30" 
-                                            Foreground="#8470FF" Background="{x:Null}" BorderBrush="#D0D0D4">
-                                            <materialDesign:PackIcon Kind="PenMinus" Height="25" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Margin="10">
-                                        <TextBlock x:Name="txtMoneyBeforeDot2" Text="$5000" Foreground="Black" FontSize="25" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                        <TextBlock x:Name="txtMoneyAfterDot2" Text=".00" Foreground="#D0D0D4" FontSize="25" FontWeight="DemiBold" VerticalAlignment="Bottom"/>
-                                        <TextBlock x:Name="txtMoney2" Text="/$150000" Foreground="#8470FF" FontSize="12" VerticalAlignment="Bottom" 
-                                        FontWeight="DemiBold"/>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Grid Margin="10">
-                                    <StackPanel Orientation="Vertical">
-                                        <ProgressBar Name="progressBar2" Height="25" Width="250" Minimum="0" Maximum="100"  Margin="0,10,0,10"
-                                        Value="3" Foreground="#8470FF" Background="LightGray" HorizontalAlignment="Center"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Left to complete the goal"  FontSize="10" Foreground="Gray" FontWeight="DemiBold" Width="194"/>
-                                            <TextBlock HorizontalAlignment="Right" x:Name="txtLeftGoal2" Text="$145000.00" FontSize="10" Foreground="#343438" FontWeight="DemiBold"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </materialDesign:Card>
-                    </WrapPanel>
-                </Grid>
-
-                <Grid Grid.Column="3">
-                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="280">
-                        <materialDesign:Card UniformCornerRadius="15" Background="#F5F4FF" BorderBrush="Gray" Width="270">
-                            <StackPanel Orientation="Vertical">
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                                            <TextBlock x:Name="txtGoalName3" Text="Vacation" FontWeight="Bold" FontSize="18"
-                                            Height="24" Width="218"/>
-                                            <TextBlock x:Name="txtDueDate3" Text="Due Date - 20 Nov 2024" FontWeight="DemiBold" Foreground="Gray"/>
-                                        </StackPanel>
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Height="30" Width="30" 
-                                            Foreground="#8470FF" Background="{x:Null}" BorderBrush="#D0D0D4">
-                                            <materialDesign:PackIcon Kind="PenMinus" Height="25" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Margin="10">
-                                        <TextBlock x:Name="txtMoneyBeforeDot3" Text="$2500" Foreground="Black" FontSize="25" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                        <TextBlock x:Name="txtMoneyAfterDot3" Text=".00" Foreground="#D0D0D4" FontSize="25" FontWeight="DemiBold" VerticalAlignment="Bottom"/>
-                                        <TextBlock x:Name="txtMoney3" Text="/$3500" Foreground="#8470FF" FontSize="12" VerticalAlignment="Bottom" 
-                                        FontWeight="DemiBold"/>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Grid Margin="10">
-                                    <StackPanel Orientation="Vertical">
-                                        <ProgressBar Name="progressBar3" Height="25" Width="250" Minimum="0" Maximum="100"  Margin="0,10,0,10"
-                                        Value="71" Foreground="#8470FF" Background="LightGray" HorizontalAlignment="Center"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Left to complete the goal"  FontSize="10" Foreground="Gray" FontWeight="DemiBold" Width="198"/>
-                                            <TextBlock HorizontalAlignment="Right" x:Name="txtLeftGoal3" Text="$1000.00" FontSize="10" Foreground="#343438" FontWeight="DemiBold"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </materialDesign:Card>
-                    </WrapPanel>
-                </Grid>
+                                                <Grid Margin="10">
+                                                    <StackPanel Orientation="Vertical">
+                                                        <ProgressBar Height="25" Width="250" Minimum="0" Maximum="100"  Margin="0,10,0,10"
+                                                                    Value="{Binding ProgressGoalPercentage, Mode=OneWay, FallbackValue=50}" Foreground="#8470FF" Background="LightGray" HorizontalAlignment="Center"/>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="Left to complete the goal"  FontSize="10" Foreground="Gray" FontWeight="DemiBold" Width="198"/>
+                                                            <TextBlock HorizontalAlignment="Right" x:Name="txtLeftGoal" Text="{Binding LeftMoneyGoal}" FontSize="10" Foreground="#343438" FontWeight="DemiBold"/>
+                                                            <TextBlock Text="đ"  FontSize="10" Foreground="#343438" FontWeight="DemiBold"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </StackPanel>
+                                        </materialDesign:Card>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
-
             <Grid Grid.Row="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -315,8 +204,8 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Total Goals" FontSize="25" FontWeight="Bold" Margin="10" Width="205"/>
                                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#343438" BorderBrush="Gray"
-                                        Background="{x:Null}" Margin="0,0,20,0"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Width="120" Height="40">
+    Background="{x:Null}" Margin="0,0,20,0"
+    materialDesign:ButtonAssist.CornerRadius="25" Width="123" Height="40">
                                         <ComboBox HorizontalAlignment="Center" Width="80" materialDesign:HintAssist.Hint="This Year">
                                             <ComboBoxItem>
                                                 <TextBlock Text="This Month"/>
@@ -331,70 +220,70 @@
                                 <TextBlock  Margin="10" x:Name="txtTotalGoal" Text="25" FontSize="25" FontWeight="Bold"/>
                                 <StackPanel Orientation="Horizontal" Margin="10,10">
                                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#343438" BorderBrush="Gray"
-                                        Background="{x:Null}" Margin="0,0,20,0"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Width="152" Height="49">
+    Background="{x:Null}" Margin="0,0,20,0"
+    materialDesign:ButtonAssist.CornerRadius="25" Width="152" Height="49">
                                         <StackPanel Orientation="Horizontal">
                                             <Border Width="35" Height="35" CornerRadius="17.5" Background="#FEF4E1" VerticalAlignment="Center">
                                                 <materialDesign:PackIcon Kind="ClockTimeTwelveOutline"  HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center" Foreground="#F9970C"/>
+                    VerticalAlignment="Center" Foreground="#F9970C"/>
                                             </Border>
                                             <StackPanel Orientation="Vertical" Margin="5,0">
                                                 <TextBlock Text="Not Started" VerticalAlignment="Center" 
-                                                           FontSize="15" FontWeight="DemiBold" Foreground="#F9970C"/>
+                       FontSize="15" FontWeight="DemiBold" Foreground="#F9970C"/>
                                                 <TextBlock x:Name="txtNumberOfNotStartedStatus" Text="3" 
-                                                           TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+                       TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Button>
 
                                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#343438" BorderBrush="Gray"
-                                    Background="{x:Null}" Margin="0,0,20,0"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Width="152" Height="49">
+Background="{x:Null}" Margin="0,0,20,0"
+    materialDesign:ButtonAssist.CornerRadius="25" Width="152" Height="49">
                                         <StackPanel Orientation="Horizontal">
                                             <Border Width="35" Height="35" CornerRadius="17.5" Background="#E5FAE6" VerticalAlignment="Center">
                                                 <materialDesign:PackIcon Kind="ProgressClock"  HorizontalAlignment="Center"
-                                                VerticalAlignment="Center" Foreground="#297B32"/>
+            VerticalAlignment="Center" Foreground="#297B32"/>
                                             </Border>
                                             <StackPanel Orientation="Vertical" Margin="5,0">
                                                 <TextBlock Text="In Progress" VerticalAlignment="Center" 
-                                                FontSize="15" FontWeight="DemiBold" Foreground="#297B32"/>
+            FontSize="15" FontWeight="DemiBold" Foreground="#297B32"/>
                                                 <TextBlock x:Name="txtNumberOfInProgressStatus" Text="4" 
-                                                TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+            TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="10,10">
                                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#343438" BorderBrush="Gray"
-                                        Background="{x:Null}" Margin="0,0,20,0"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Width="152" Height="49">
+    Background="{x:Null}" Margin="0,0,20,0"
+    materialDesign:ButtonAssist.CornerRadius="25" Width="152" Height="49">
                                         <StackPanel Orientation="Horizontal">
                                             <Border Width="35" Height="35" CornerRadius="17.5" Background="#FFEBEB" VerticalAlignment="Center">
                                                 <materialDesign:PackIcon Kind="TimerCancelOutLine"  HorizontalAlignment="Center"
-                                                VerticalAlignment="Center" Foreground="#E83838"/>
+            VerticalAlignment="Center" Foreground="#E83838"/>
                                             </Border>
                                             <StackPanel Orientation="Vertical" Margin="5,0">
                                                 <TextBlock Text="Cancelled"  TextAlignment="Center"
-                                                FontSize="15" FontWeight="DemiBold" Foreground="#E83838" Width="75"/>
+            FontSize="15" FontWeight="DemiBold" Foreground="#E83838" Width="75"/>
                                                 <TextBlock x:Name="txtNumberOfCancelledStatus" Text="2" 
-                                                TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+            TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Button>
 
                                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#343438" BorderBrush="Gray"
-                                        Background="{x:Null}" Margin="0,0,20,0"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Width="152" Height="49">
+    Background="{x:Null}" Margin="0,0,20,0"
+    materialDesign:ButtonAssist.CornerRadius="25" Width="152" Height="49">
                                         <StackPanel Orientation="Horizontal">
                                             <Border Width="35" Height="35" CornerRadius="17.5" Background="#D6D2FF" VerticalAlignment="Center">
                                                 <materialDesign:PackIcon Kind="ClockCheckOutline" HorizontalAlignment="Center"
-                                                VerticalAlignment="Center" Foreground="#8470ff"/>
+            VerticalAlignment="Center" Foreground="#8470ff"/>
                                             </Border>
                                             <StackPanel Orientation="Vertical" Margin="5,0">
                                                 <TextBlock Text="Finished" 
-                                                FontSize="15" FontWeight="DemiBold" Foreground="#8470ff" Width="74"/>
+            FontSize="15" FontWeight="DemiBold" Foreground="#8470ff" Width="74"/>
                                                 <TextBlock x:Name="txtNumberOfFinishedStatus" Text="3" 
-                                                TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+            TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Button>
@@ -408,10 +297,10 @@
                         <materialDesign:Card UniformCornerRadius="15" Background="#F5F4FF" BorderBrush="Gray" Width="936">
                             <StackPanel Orientation="Vertical" Height="241" Margin="0,0,10,0">
                                 <StackPanel Orientation="Horizontal" Width="925">
-                                    <TextBlock Text="Saving Overview" FontSize="25" FontWeight="Bold" Margin="10" Width="784"/>
+                                    <TextBlock Text="Saving Overview" FontSize="25" FontWeight="Bold" Margin="10" Width="773"/>
                                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="#343438" BorderBrush="Gray"
-                                        Background="{x:Null}" Margin="0,0,20,0"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Width="120" Height="40">
+    Background="{x:Null}" Margin="0,0,20,0"
+    materialDesign:ButtonAssist.CornerRadius="25" Width="122" Height="40">
                                         <ComboBox HorizontalAlignment="Center" Width="80" materialDesign:HintAssist.Hint="This Year">
                                             <ComboBoxItem>
                                                 <TextBlock Text="This Month"/>
@@ -422,15 +311,18 @@
                                         </ComboBox>
                                     </Button>
                                 </StackPanel>
-                                <lvc:CartesianChart Height="180" Width="900" Hoverable="False" DataTooltip="{x:Null}"
-                                                     Series="{Binding ExpenseSeries}">
+                                <lvc:CartesianChart Series="{Binding Series}" Height="180" Width="900" Hoverable="False" DataTooltip="{x:Null}">
                                     <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis ShowLabels="True" Labels="Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec">
+                                        <lvc:Axis Title="Months" Labels="{Binding Labels}">
                                             <lvc:Axis.Separator>
                                                 <lvc:Separator StrokeThickness="0" Step="1"/>
                                             </lvc:Axis.Separator>
                                         </lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
+
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis Title="Expenses" LabelFormatter="{Binding YFormatter}"/>
+                                    </lvc:CartesianChart.AxisY>
                                 </lvc:CartesianChart>
                             </StackPanel>
                         </materialDesign:Card>
