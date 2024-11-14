@@ -1,4 +1,5 @@
-﻿using FinanceManagementApp.Domain;
+﻿using BusinessObjects;
+using FinanceManagementApp.Domain;
 using MaterialDesignThemes.Wpf;
 using Services;
 using System.Configuration;
@@ -24,13 +25,6 @@ namespace FinanceManagementApp
         {
             InitializeComponent();
         }
-
-        //private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    double width = this.ActualWidth;
-        //    double height = this.ActualHeight;
-        //    MessageBox.Show($"Width: {width}, Height: {height}");
-        //}
 
         private void OnSidebar_SelectionChanged(object sender, RoutedEventArgs e)
         {

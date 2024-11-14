@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessObjects;
+using Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,37 +21,38 @@ namespace FinanceManagementApp
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private readonly UserService _userService;
         public LoginWindow()
         {
             InitializeComponent();
+            _userService = new UserService();
         }
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtEmail.Text;
+            string username = txtUsername.Text;
             string password = txtPassword.Password;
 
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Please enter both email and password.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             // For demonstration, suppose a simple email/password check
-            if (email == "test@example.com" && password == "password123")
+            if (Login(username, password))
             {
                 MessageBox.Show("Sign-in successful!", "Welcome", MessageBoxButton.OK, MessageBoxImage.Information);
-                // Navigate to another window or perform actions for successful login
+                this.Hide();
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
             }
             else
             {
                 MessageBox.Show("Invalid email or password. Please try again.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
         private void SignUpLink_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // Handle the sign-up link click event here.
-            // For example, navigate to the Sign-Up window:
             SignUpWindow signUpWindow = new SignUpWindow(); // assuming a SignUpWindow exists
             signUpWindow.Show();
             this.Close(); // Optionally close the current window
@@ -57,7 +60,29 @@ namespace FinanceManagementApp
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("helloooooooooooooooooooooooooo");
+            MessageBox.Show("Login di men");
+        }
+
+        private bool Login(string userName, string password)
+        {
+            try
+            {
+                var user = _userService.GetUser(userName, password);
+                if (user != null)
+                {
+                    UserSession.Instance.SetUser(user);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while logging in. Please try again later.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
         }
     }
 }
