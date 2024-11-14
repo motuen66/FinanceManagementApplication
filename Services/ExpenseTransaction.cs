@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class ExpenseTransactionService : IExpenseTransaction
+    public class ExpenseTransactionService : IExpenseTransactionService
     {
         public void CreateExpenseTransaction(ExpenseTransaction transaction)
         {

@@ -56,9 +56,11 @@ GO
 	CLOSE tableCursor
 	DEALLOCATE tableCursor
 /*
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->>>>>>>> END: RESET DATABASE >>>>>>>>>>
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>> END: RESET DATABASE >>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 
 */
 GO
@@ -81,9 +83,10 @@ CREATE TABLE [FinanceRecord] (
 	[userId] INT,
 	[totalIncome] INT,
 	[totalExpense] INT,
-	[from] DATE,
-	[to] DATE,
+	[month] INT,
+	[year] INT,
 
+	CONSTRAINT PK_FinanceRecord PRIMARY KEY ([userId], [month], [year]),
 	CONSTRAINT FK_FinanceRecord FOREIGN KEY ([userId]) REFERENCES [User]([id]) ON DELETE CASCADE
 );
 
@@ -99,7 +102,7 @@ CREATE TABLE [IncomeTransaction] (
 	[userId] INT,
 	[sourceId] INT,
 	[amount] INT,
-	[date] DATE, 
+	[date] DATETIME DEFAULT GETDATE(), 
 
 	CONSTRAINT FK_IncomeTransaction_User FOREIGN KEY ([userId]) REFERENCES [User]([id]) ON DELETE CASCADE,
 	CONSTRAINT FK_IncomeTransaction_IncomeSource FOREIGN KEY ([sourceId]) REFERENCES [IncomeSource]([id])
@@ -107,21 +110,25 @@ CREATE TABLE [IncomeTransaction] (
 
 CREATE TABLE [BudgetItem] (
 	[id] INT IDENTITY(1, 1),
+	[userId] INT,
 	[budgetName] NVARCHAR(50),
 	[limitAmount] INT,
 	[isOverBudget] BIT DEFAULT(0),
 	[isDelete] BIT DEFAULT(0),
 
-	CONSTRAINT PK_BudgetItem PRIMARY KEY ([id])
+	CONSTRAINT PK_BudgetItem PRIMARY KEY ([id]),
+	CONSTRAINT FK_BudgetItem_User FOREIGN KEY ([userId]) REFERENCES [User]([id]) ON DELETE CASCADE
 );
 
 CREATE TABLE [ExpenseTransaction] (
+	[id] INT IDENTITY(1, 1),
 	[userId] INT,
 	[budgetId] INT,
 	[note] NVARCHAR(100),
 	[amount] MONEY NOT NULL,
-	[date] DATE DEFAULT CAST(GETDATE() AS DATE), 
+	[date] DATETIME DEFAULT GETDATE(), 
 
+	CONSTRAINT PK_ExpenseTransaction PRIMARY KEY ([id]),
 	CONSTRAINT FK_ExpenseTransaction_User FOREIGN KEY ([userId]) REFERENCES [User]([id]) ON DELETE CASCADE,
 	CONSTRAINT FK_ExpenseTransaction_BudgetItem FOREIGN KEY ([budgetId]) REFERENCES BudgetItem([id])
 );
@@ -142,17 +149,23 @@ CREATE TABLE [SavingGoal] (
 );
 
 CREATE TABLE [SavingTransaction] (
+	[id] INT IDENTITY(1,1),
+	[userId] INT,
 	[savingGoalId] INT,
 	[note] NVARCHAR(100),
 	[amount] INT NOT NULL,
-	[date] DATE DEFAULT CAST(GETDATE() AS DATE), 
+	[date] DATETIME DEFAULT GETDATE(), 
 
-	CONSTRAINT FK_SavingTransaction_SavingGoal FOREIGN KEY ([savingGoalId]) REFERENCES [SavingGoal]([id])
+	CONSTRAINT PK_SavingTransaction PRIMARY KEY ([id]),
+	CONSTRAINT FK_SavingTransaction_SavingGoal FOREIGN KEY ([savingGoalId]) REFERENCES [SavingGoal]([id]),
+	CONSTRAINT FK_SavingTransaction_User FOREIGN KEY ([userId]) REFERENCES [User]([id]) ON DELETE CASCADE,
 );
 /*
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->>>>>>>> END: TABLES >>>>>>>>>>
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>> END: TABLES >>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 
 */
 GO
@@ -283,9 +296,11 @@ BEGIN
 END;
 GO
 /*
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->>>>>>>> END: TRIGGERS >>>>>>>>>>
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>> END: TRIGGERS >>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 
 */
 GO
@@ -294,90 +309,100 @@ GO
 <<<<<<<<<< BEGIN: EXAMPLE DATA <<<<<<<<<<
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 */
--- Insert sample data into [User]
-INSERT INTO [User] (username, password, balance, avatarPath) 
+-- Insert vào bảng User
+INSERT INTO [User] (username, password, balance, avatarPath)
+VALUES
+    ('abc', '123', 1000, '/images/abc_avatar.png'),
+    ('john_doe', 'password123', 2000, '/images/john_avatar.png'),
+    ('jane_doe', 'password456', 1500, '/images/jane_avatar.png');
+
+-- Insert vào bảng IncomeSource
+INSERT INTO [IncomeSource] (sourceName, isDelete)
+VALUES
+    ('Salary', 0),
+    ('Freelance', 0),
+    ('Investment', 0),
+    ('Side Business', 0),
+    ('Rental Income', 0);
+
+-- Insert vào bảng FinanceRecord
+INSERT INTO [FinanceRecord] (userId, totalIncome, totalExpense, month, year)
 VALUES 
-('Hung', '123', 500, 'resources/test.jpg'),
-('Anh', '123', 1000, 'resources/test.jpg'),
-('Tu', '123', 250, NULL);
+    (1, 5200, 2100, 9, 2024),
+    (1, 4800, 1900, 10, 2024),
+    (1, 5000, 2000, 11, 2024),
+    (1, 5500, 2500, 12, 2024),
+    (2, 3200, 1100, 9, 2024),
+    (2, 3100, 1200, 10, 2024),
+    (2, 3000, 1200, 11, 2024),
+    (2, 3300, 1300, 12, 2024),
+    (3, 7200, 2900, 9, 2024),
+    (3, 6800, 3100, 10, 2024),
+    (3, 7000, 3000, 11, 2024),
+    (3, 7200, 2800, 12, 2024);
 
--- Insert 50 rows into [FinanceRecord]
-DECLARE @i INT = 1;
-WHILE @i <= 50
-BEGIN
-    DECLARE @to DATE = DATEADD(MONTH, -@i, EOMONTH(GETDATE(), 1)); -- Start of the month
-    DECLARE @from DATE = EOMONTH(DATEADD(MONTH, -@i, GETDATE())); -- End of the month
+-- Insert vào bảng IncomeTransaction
+INSERT INTO [IncomeTransaction] (userId, sourceId, amount, date)
+VALUES 
+    (1, 1, 3200, '2024-09-01'),
+    (1, 2, 1000, '2024-09-10'),
+    (1, 3, 1200, '2024-09-20'),
+    (1, 1, 3000, '2024-10-01'),
+    (1, 2, 1500, '2024-10-15'),
+    (2, 1, 2500, '2024-09-02'),
+    (2, 4, 700, '2024-09-12'),
+    (2, 1, 2400, '2024-10-01'),
+    (2, 3, 1200, '2024-10-20'),
+    (3, 1, 4000, '2024-09-03'),
+    (3, 3, 2500, '2024-09-25'),
+    (3, 1, 4200, '2024-10-05'),
+    (3, 2, 1800, '2024-10-22');
 
-    INSERT INTO [FinanceRecord] (userId, totalIncome, totalExpense, [from], [to])
-    VALUES 
-        ((@i % 3) + 1, FLOOR(RAND() * 10000), FLOOR(RAND() * 10000), @from, @to);
+-- Insert vào bảng BudgetItem
+INSERT INTO [BudgetItem] (userId, budgetName, limitAmount, isOverBudget, isDelete)
+VALUES 
+    (1, 'Food', 500, 0, 0),
+    (1, 'Entertainment', 300, 0, 0),
+    (2, 'Rent', 700, 0, 0),
+    (2, 'Utilities', 100, 0, 0),
+    (3, 'Travel', 1000, 0, 0),
+    (3, 'Healthcare', 200, 0, 0);
 
-    SET @i = @i + 1;
-END;
+-- Insert vào bảng ExpenseTransaction
+INSERT INTO [ExpenseTransaction] (userId, budgetId, note, amount, date)
+VALUES 
+    (1, 1, 'Groceries', 200, '2024-09-05'),
+    (1, 2, 'Concert ticket', 150, '2024-09-10'),
+    (1, 1, 'Dining out', 120, '2024-10-05'),
+    (1, 2, 'Movie night', 50, '2024-10-15'),
+    (2, 3, 'Water bill', 100, '2024-09-08'),
+    (2, 4, 'Flight ticket', 600, '2024-09-20'),
+    (2, 3, 'Internet bill', 80, '2024-10-08'),
+    (3, 5, 'Clothing', 250, '2024-09-18'),
+    (3, 6, 'Dental checkup', 200, '2024-09-25'),
+    (3, 5, 'Gift shopping', 150, '2024-10-10'),
+    (3, 6, 'Health supplements', 100, '2024-10-30');
 
--- Insert 50 rows into [IncomeSource]
-SET @i = 1;
-WHILE @i <= 50
-BEGIN
-    INSERT INTO [IncomeSource] (sourceName, isDelete)
-    VALUES 
-        ('Source_' + CAST(@i AS NVARCHAR), @i % 2);
-    SET @i = @i + 1;
-END
+-- Insert vào bảng SavingGoal
+INSERT INTO [SavingGoal] (userId, title, description, currentAmount, goalAmount, goalDate, isCompleted, isDelete)
+VALUES 
+    (1, 'Car Fund', 'Saving for a new car', 500, 5000, '2025-09-01', 0, 0),
+    (2, 'Emergency Fund', 'Building emergency savings', 300, 3000, '2025-06-01', 0, 0),
+    (3, 'House Fund', 'Saving for house down payment', 1000, 20000, '2026-12-01', 0, 0);
 
--- Insert 50 rows into [IncomeTransaction]
-SET @i = 1;
-WHILE @i <= 50
-BEGIN
-    INSERT INTO [IncomeTransaction] (userId, sourceId, amount, date)
-    VALUES 
-        ((@i % 3) + 1, (@i % 10) + 1, (RAND() * 1000), DATEADD(DAY, -@i, GETDATE()));
-    SET @i = @i + 1;
-END
+-- Insert vào bảng SavingTransaction
+INSERT INTO [SavingTransaction] (userId, savingGoalId, note, amount, date)
+VALUES 
+    (1, 1, 'Monthly car savings', 500, '2024-09-05'),
+    (1, 1, 'Extra car savings', 250, '2024-10-15'),
+    (1, 2, 'Vacation savings', 200, '2024-09-10'),
+    (2, 3, 'Emergency fund', 300, '2024-09-08'),
+    (2, 3, 'Added to emergency fund', 150, '2024-10-10'),
+    (3, 3, 'House savings installment', 1000, '2024-09-15'),
+    (3, 3, 'Extra house savings', 500, '2024-10-20');
 
--- Insert 50 rows into [BudgetItem]
-SET @i = 1;
-WHILE @i <= 50
-BEGIN
-    INSERT INTO [BudgetItem] (budgetName, limitAmount, isOverBudget, isDelete)
-    VALUES 
-        ('Budget_' + CAST(@i AS NVARCHAR), (RAND() * 1000), @i % 2, (@i + 1) % 2);
-    SET @i = @i + 1;
-END
-
--- Insert 50 rows into [ExpenseTransaction]
-SET @i = 1;
-WHILE @i <= 50
-BEGIN
-    INSERT INTO [ExpenseTransaction] (userId, budgetId, note, amount, date)
-    VALUES 
-        ((@i % 3) + 1, (@i % 10) + 1, 'Expense_' + CAST(@i AS NVARCHAR), (RAND() * 500), DATEADD(DAY, -@i, GETDATE()));
-    SET @i = @i + 1;
-END
-
--- Insert 50 rows into [SavingGoal]
-SET @i = 1;
-WHILE @i <= 50
-BEGIN
-    INSERT INTO [SavingGoal] (userId, title, description, currentAmount, goalAmount, goalDate, isCompleted, isDelete)
-    VALUES 
-        ((@i % 3) + 1, 'Goal_' + CAST(@i AS NVARCHAR), 'Description for goal ' + CAST(@i AS NVARCHAR), 
-         (RAND() * 1000), (RAND() * 10000), DATEADD(YEAR, 1, GETDATE()), @i % 2, (@i + 1) % 2);
-    SET @i = @i + 1;
-END
-
--- Insert 50 rows into [SavingTransaction]
-SET @i = 1;
-WHILE @i <= 50
-BEGIN
-    INSERT INTO [SavingTransaction] (savingGoalId, note, amount, date)
-    VALUES 
-        ((@i % 10) + 1, 'Saving note ' + CAST(@i AS NVARCHAR), (RAND() * 500), DATEADD(DAY, -@i, GETDATE()));
-    SET @i = @i + 1;
-END
 /*
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->>>>>>>> END: EXAMPLE DATA >>>>>>>>>>
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>> END: EXAMPLE DATA >>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 */

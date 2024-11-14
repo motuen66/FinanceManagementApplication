@@ -10,16 +10,16 @@ public class DialogsViewModel : ViewModelBase
     public DialogsViewModel()
     {
         //Sample 4
-        OpenSample4DialogCommand = new AnotherCommandImplementation(OpenSample4Dialog);
+        //OpenSample4DialogCommand = new AnotherCommandImplementation(OpenSample4Dialog);
      
-        CancelSample4DialogCommand = new AnotherCommandImplementation(CancelSample4Dialog);
+        //CancelSample4DialogCommand = new AnotherCommandImplementation(CancelSample4Dialog);
     }
 
     #region SAMPLE 3
 
-    public ICommand RunDialogCommand => new AnotherCommandImplementation(ExecuteRunDialog);
+    //public ICommand RunDialogCommand => new AnotherCommandImplementation(ExecuteRunDialog);
 
-    public ICommand RunExtendedDialogCommand => new AnotherCommandImplementation(ExecuteRunExtendedDialog);
+    //public ICommand RunExtendedDialogCommand => new AnotherCommandImplementation(ExecuteRunExtendedDialog);
 
     private async void ExecuteRunDialog(object? _)
     {

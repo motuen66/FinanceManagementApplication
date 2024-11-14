@@ -2,6 +2,7 @@
 using DataAccessLayer;
 using FinanceManagementApp.Domain;
 using MaterialDesignThemes.Wpf;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,109 +26,123 @@ namespace FinanceManagementApp
     /// <summary>
     /// Interaction logic for ExpenseManagement.xaml
     /// </summary>
-    public partial class ExpenseManagement : UserControl, INotifyPropertyChanged
+    public partial class ExpenseManagement : UserControl
     {
-        private ExpenseTransaction _selectedTransaction;
+        private readonly IExpenseTransactionService _service;
 
         // Public Property to hold the selected transaction
-        public ExpenseTransaction SelectedTransaction
-        {
-            get => _selectedTransaction;
-            set
-            {
-                if (_selectedTransaction != value)
-                {
-                    _selectedTransaction = value;
-                    OnPropertyChanged(nameof(SelectedTransaction));
-                }
-            }
-        }
-        public ObservableCollection<ExpenseTransaction> ExpenseTransactions { get; set; }
         public string CurrentDate => DateTime.Now.ToString("dd/MM/yyyy");
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public ExpenseManagement()
         {
+            _service = new ExpenseTransactionService();
             InitializeComponent();
             LoadExpenseTransactions();
-            DataContext = this;
         }
 
         private void LoadExpenseTransactions()
         {
-            ExpenseTransactions = new ObservableCollection<ExpenseTransaction>(ExpenseTransactionDAO.GetAllExpenseTransactionsById(3));
+            dgExpenseTransactions.ItemsSource = ExpenseTransactionDAO.GetAllExpenseTransactionsById(1);
+            var budgetItems = BudgetItemDAO.GetBudgetItems(1);
+            cbBudget.ItemsSource = budgetItems;
+            cbBudget.SelectedValuePath = "Id";
+            cbBudget.DisplayMemberPath = "BudgetName";
+            cbUpBudget.ItemsSource = budgetItems;
+            cbUpBudget.SelectedValuePath = "Id";
+            cbUpBudget.DisplayMemberPath = "BudgetName";
         }
 
-        private void Sample1_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
+        
+        private void btnUpSelectionChange(object sender, RoutedEventArgs e)
         {
-
-        }
-        private void dgExpenseTransactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dgExpenseTransactions.SelectedItem is ExpenseTransaction selected)
+            if (sender is System.Windows.Controls.Button button && button.Tag is ExpenseTransaction transaction)
             {
-                cmbBudget.SelectedValue = selected.BudgetId;
-                txtAmount.Text = selected.Amount.ToString();
-                txtNote.Text = selected.Note.ToString();
-                dpTransactionDate.SelectedDate = selected.Date?.ToDateTime(TimeOnly.MinValue);
-                Console.WriteLine(cmbBudget.SelectedValue);
+                txtUpExpenseId.Text = transaction.Id.ToString();
+                cbUpBudget.SelectedValue = transaction.BudgetId;
+                txtUpAmount.Text = transaction.Amount.ToString();
+                txtUpNote.Text = transaction.Note;
+                dpUpTransactionDate.SelectedDate = transaction.Date;
             }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void btnDelSelectionChange(object sender, RoutedEventArgs e)
         {
-            // Assuming SelectedTransaction is the transaction being edited
-           
-            
-        }
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void UpdateMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            // Get the selected transaction from the clicked menu item
-            var menuItem = sender as MenuItem;
-            var transaction = menuItem.DataContext as ExpenseTransaction;
-
-            if (transaction != null)
+            if (sender is System.Windows.Controls.Button button && button.Tag is int Id)
             {
-                // Set the selected transaction to the dialog's fields
-                cmbBudget.SelectedValue = transaction.BudgetId;
-                txtAmount.Text = transaction.Amount.ToString();
-                txtNote.Text = transaction.Note.ToString();
-                dpTransactionDate.SelectedDate = transaction.Date?.ToDateTime(TimeOnly.MinValue);
-
-                // Open the dialog
-                UpdateDialogHost.IsOpen = true;
+                txtDelExpenseId.Text = Id.ToString();
             }
         }
 
-
-        private void UpdateTransaction(ExpenseTransaction transaction)
+        private void btnUpdate(object sender, RoutedEventArgs e)
         {
-            var updatedTransaction = ExpenseTransactions.FirstOrDefault(t =>
-         t.Date == transaction.Date &&
-         t.Amount == transaction.Amount &&
-         t.Note == transaction.Note &&
-         t.Budget == transaction.Budget);
-            if (updatedTransaction != null)
+            if (cbUpBudget.SelectedValue == null || string.IsNullOrEmpty(txtUpAmount.Text) || string.IsNullOrEmpty(txtUpNote.Text) || dpUpTransactionDate.SelectedDate == null)
             {
-                updatedTransaction.Amount = transaction.Amount;
-                updatedTransaction.Note = transaction.Note;
-                updatedTransaction.Date = transaction.Date;
-                updatedTransaction.Budget = transaction.Budget;
-                // Notify DataGrid to update view
-                OnPropertyChanged(nameof(ExpenseTransactions));
+                MessageBox.Show("Please fill all information.");
+                return;
+            }
+
+            ExpenseTransaction et = new ExpenseTransaction
+            {
+                Id = Int32.Parse(txtUpExpenseId.Text),
+                UserId = 1,
+                BudgetId = (int)cbUpBudget.SelectedValue,
+                Amount = Int32.Parse(txtUpAmount.Text),
+                Note = txtUpNote.Text,
+                Date = dpUpTransactionDate.SelectedDate
+            };
+
+            try
+            {
+                _service.UpdateExpenseTransaction(et);
+                MessageBox.Show("Update successfully!");
+                LoadExpenseTransactions();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
-        private void DeleteTransaction(ExpenseTransaction transaction)
+        private void btnCreateExpense(object sender, RoutedEventArgs e)
         {
-            // Logic to delete the transaction
+            if (cbBudget.SelectedValue == null || string.IsNullOrEmpty(txtAmount.Text) || string.IsNullOrEmpty(txtNote.Text) || dpTransactionDate.SelectedDate == null)
+            {
+                MessageBox.Show("Please fill all information.");
+                return;
+            }
+
+            ExpenseTransaction et = new ExpenseTransaction
+            {
+                UserId = 1,
+                BudgetId = (int)cbBudget.SelectedValue,
+                Amount = Int32.Parse(txtAmount.Text),
+                Note = txtNote.Text,
+                Date = dpTransactionDate.SelectedDate
+            };
+
+            try
+            {
+                _service.CreateExpenseTransaction(et);
+                LoadExpenseTransactions();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnDelExpense(object sender, RoutedEventArgs e)
+        {
+            _service.DeleteExpenseTransaction(Int32.Parse(txtDelExpenseId.Text));
+            LoadExpenseTransactions();
+        }
+            private void OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
+        {
+            cbBudget.SelectedValue = null;
+            txtAmount.Text = "";
+            txtNote.Text = "";
+            dpTransactionDate.SelectedDate = null;
         }
     }
 }

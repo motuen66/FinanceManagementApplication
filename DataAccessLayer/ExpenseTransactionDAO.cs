@@ -18,7 +18,7 @@ namespace DataAccessLayer
         public static void DeleteExpenseTransaction(int id)
         {
             using var context = new FinanceManagementApplicationContext();
-            var transaction = context.ExpenseTransactions.FirstOrDefault(t => t.UserId == id);
+            var transaction = context.ExpenseTransactions.FirstOrDefault(t => t.Id == id);
             if (transaction != null)
             {
                 context.ExpenseTransactions.Remove(transaction);
@@ -50,16 +50,27 @@ namespace DataAccessLayer
         {
             using var context = new FinanceManagementApplicationContext();
             return context.ExpenseTransactions
-                         .Include(t => t.Budget) 
+                         .Include(t => t.Budget)
                          .ToList();
         }
 
-        public static IEnumerable<ExpenseTransaction> GetAllExpenseTransactionsById(int userId)
+        public static List<ExpenseTransaction> GetAllExpenseTransactionsById(int userId)
         {
             using var context = new FinanceManagementApplicationContext();
             return context.ExpenseTransactions
-                         .Where(t => t.UserId.HasValue && t.UserId.Value == userId)
-                         .Include(t => t.Budget) 
+                         .Where(t => t.UserId == userId)
+                         .Select(t => new ExpenseTransaction
+                         {
+                             Id = t.Id,
+                             BudgetId = t.BudgetId,
+                             Amount = t.Amount,
+                             Budget = new BudgetItem
+                             {
+                                 BudgetName = t.Budget.BudgetName
+                             },
+                             Date = t.Date,
+                             Note = t.Note
+                         })
                          .ToList();
         }
     }

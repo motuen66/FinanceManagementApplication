@@ -8,18 +8,17 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="878" d:DesignWidth="1496">
-
     <Grid>
         <Border 
-    Width="100" 
-    Height="40" 
-    CornerRadius="20"
-    BorderBrush="#8470FF"
-    BorderThickness="0.5"
-    Background="Transparent"
-    HorizontalAlignment="Left"
-    VerticalAlignment="Top"
-    Margin="568,96,0,0">
+        Width="100" 
+        Height="40" 
+        CornerRadius="20"
+        BorderBrush="#8470FF"
+        BorderThickness="0.5"
+        Background="Transparent"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Margin="568,96,0,0">
             <Button Content="Find" 
             HorizontalAlignment="Center" 
             VerticalAlignment="Center" 
@@ -32,18 +31,15 @@
 
         <DataGrid
         AutoGenerateColumns="False"
-             x:Name="dgExpenseTransactions" 
-            SelectionChanged="dgExpenseTransactions_SelectionChanged" 
+        x:Name="dgExpenseTransactions" 
         CanUserAddRows="False"
         HeadersVisibility="All"
-        ItemsSource="{Binding ExpenseTransactions}"
         Margin="140,180,140,90"
-   RowBackground="White" 
-    AlternatingRowBackground="White" 
-    Background="White"
-            SelectionMode="Extended"
-  SelectionUnit="Cell"
-           
+        RowBackground="White" 
+        AlternatingRowBackground="White" 
+        Background="White"
+        SelectionMode="Extended"
+        SelectionUnit="Cell"
         Width="Auto">
             <DataGrid.Resources>
 
@@ -58,14 +54,13 @@
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                     <!-- Điều chỉnh khoảng cách xung quanh chữ -->
                     <Setter Property="Padding" Value="20,0,10,0" />
-
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="1*"  IsReadOnly="True" />
                 <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="1*" IsReadOnly="True" />
-                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="1*" IsReadOnly="True" />
-                <DataGridTextColumn Header="Expense Name" Binding="{Binding Budget.BudgetName}" Width="1*" IsReadOnly="True" />
+                <DataGridTextColumn Header="Amount" Binding="{Binding AmountStr}" Width="1*" IsReadOnly="True" />
+                <DataGridTextColumn Header="Expense Category" Binding="{Binding Budget.BudgetName}" Width="1*" IsReadOnly="True" />
                 <DataGridTemplateColumn Header="Actions" Width="1*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -77,13 +72,17 @@
                                 Foreground="White"
                                 Margin="0,0,5,0"
                                 Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                                CommandTarget="{Binding ElementName=UpdateDialogHost}" />
+                                Tag="{Binding}"
+                                Click="btnUpSelectionChange" 
+                                CommandTarget="{Binding ElementName=UpdateDialog}" />
 
                                 <!-- Delete Button -->
                                 <Button
                                 Content="Delete"
                                 Background="#E83838"
                                 Foreground="White"
+                                Tag="{Binding Id}"
+                                Click="btnDelSelectionChange" 
                                 Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
                                 CommandTarget="{Binding ElementName=DeleteDialogHost}" />
                             </StackPanel>
@@ -92,59 +91,6 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
-        <!-- DialogHost for Update -->
-        <materialDesign:DialogHost x:Name="UpdateDialogHost" >
-            <materialDesign:DialogHost.DialogContent>
-                <StackPanel Margin="16">
-                    <TextBlock
-                Text="Update Expense Transaction"
-                FontWeight="Bold"
-                FontSize="16"
-                Foreground="#8470FF"
-                Margin="0,0,0,10"
-                TextAlignment="Center" />
-
-                    <ComboBox
-                x:Name="cmbBudget"
-                Width="350"
-                materialDesign:HintAssist.Hint="Budget"
-                Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                ItemsSource="{Binding ElementName=UpdateDialogHost, Path=DataContext.Budgets}" />
-
-                    <TextBox
-                x:Name="txtAmount"
-                Width="350"
-                materialDesign:HintAssist.Hint="Amount"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 />
-                    <!-- Hiển thị Amount của giao dịch -->
-
-                    <TextBox
-                x:Name="txtNote"
-                Width="350"
-                materialDesign:HintAssist.Hint="Note"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                />
-                    <!-- Hiển thị Note của giao dịch -->
-
-                    <DatePicker
-                x:Name="dpTransactionDate"
-                Width="350"
-                materialDesign:HintAssist.Hint="Transaction Date"
-                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                 />
-                    <!-- Hiển thị Date của giao dịch -->
-
-                    <!-- Action Buttons for Update -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="Save" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Click="SaveButton_Click"  Style="{StaticResource MaterialDesignFlatButton}" />
-                        <Button Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{StaticResource MaterialDesignFlatButton}" />
-                    </StackPanel>
-                </StackPanel>
-            </materialDesign:DialogHost.DialogContent>
-        </materialDesign:DialogHost>
-
 
         <!-- DialogHost for Delete Confirmation -->
         <materialDesign:DialogHost x:Name="DeleteDialogHost">
@@ -158,32 +104,34 @@
                     Margin="0,0,0,10"
                     TextAlignment="Center" />
 
+                    <TextBlock
+                    x:Name="txtDelExpenseId"
+                    FontWeight="Bold"
+                    FontSize="16"
+                    Margin="0,0,0,10"
+                    TextAlignment="Center" />
+
                     <!-- Action Buttons for Delete Confirmation -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="Yes" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" CommandParameter="True" Style="{StaticResource MaterialDesignFlatButton}" />
+                        <Button 
+                            Content="Yes" 
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"                      CommandParameter="True" 
+                            Click="btnDelExpense"
+                            Style="{StaticResource MaterialDesignFlatButton}" />
                         <Button Content="No" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" CommandParameter="False" Style="{StaticResource MaterialDesignFlatButton}" />
                     </StackPanel>
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
 
-
-
-
-
-
-
-
-
-
-
-        <materialDesign:DialogHost
-    DialogClosing="Sample1_DialogHost_OnDialogClosing"
-    DialogTheme="Inherit">
+        <!-- ADD DIALOG -->
+            <materialDesign:DialogHost
+    DialogClosing="OnDialogClosing"
+    DialogTheme="Inherit" x:Name="AddDialog">
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel Margin="16">
                     <TextBlock
-                Text="Add a New Expense Transaction"
+                Text="Add Expense Transaction"
                 FontWeight="Bold"
                 FontSize="16"
                 Foreground="#8470FF"
@@ -204,7 +152,7 @@
 
                     <!-- Amount Entry -->
                     <TextBox
-                x:Name="txAmount"
+                x:Name="txtAmount"
                 Margin="0,8,0,0"
                 Width="350"
                 HorizontalAlignment="Left"
@@ -214,7 +162,7 @@
 
                     <!-- Note Entry -->
                     <TextBox
-                x:Name="txNote"
+                x:Name="txtNote"
                 Margin="0,8,0,0"
                 Width="350"
                 HorizontalAlignment="Left"
@@ -224,7 +172,7 @@
 
                     <!-- Date Picker -->
                     <DatePicker
-                x:Name="dTransactionDate"
+                x:Name="dpTransactionDate"
                 Width="350"
                 Margin="0,8,0,0"
                 HorizontalAlignment="Left"
@@ -266,30 +214,167 @@
                     </DatePicker>
 
                     <!-- Action Buttons -->
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,15,8,0">
                         <Button
-                    Margin="0,8,8,0"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                    Content="ACCEPT"
+                    Content="Cancel"
                     IsDefault="True"
-                    Style="{StaticResource MaterialDesignFlatButton}">
-                            <Button.CommandParameter>
-                                <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">True</system:Boolean>
-                            </Button.CommandParameter>
-                        </Button>
-                        <Button
-                    Margin="0,8,8,0"
-                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                    Content="CANCEL"
-                    IsCancel="True"
                     Style="{StaticResource MaterialDesignFlatButton}">
                             <Button.CommandParameter>
                                 <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">False</system:Boolean>
                             </Button.CommandParameter>
                         </Button>
+                        <Button
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Content="Add"
+                        IsCancel="True"
+                        Style="{StaticResource MaterialDesignFlatButton}" 
+                        Click="btnCreateExpense"/>
                     </StackPanel>
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
+                
+
+            <!-- Trigger Button -->
+            <Border MinHeight="256" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1" ClipToBounds="True">
+                <Grid Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button
+                    Grid.Row="0"
+                    Margin="0,88,127,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Background="#8470FF"
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                    Content="{materialDesign:PackIcon Kind=Plus, Size=22}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
+                    BorderBrush="#FF8470FF"
+                    Foreground="White" />
+                </Grid>
+            </Border>
+        </materialDesign:DialogHost>
+
+        <!-- UPDATE DIALOG -->
+        <materialDesign:DialogHost
+        DialogClosing="OnDialogClosing"
+        DialogTheme="Inherit" x:Name="UpdateDialog">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="16">
+                    <TextBlock
+                    Text="Update Expense Transaction Information"
+                    FontWeight="Bold"
+                    FontSize="16"
+                    Foreground="#8470FF"
+                    Margin="0,0,0,10"
+                    TextAlignment="Center" />
+
+                    <TextBox
+                    x:Name="txtUpExpenseId"
+                    Margin="0,8,0,0"
+                    Width="350"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    IsEnabled="False"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                    <!-- Budget Selection -->
+                    <ComboBox
+                    x:Name="cbUpBudget"
+                    Width="350"
+                    Margin="0,15,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Budget"
+                    Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                        <!-- Populate with budget items -->
+                    </ComboBox>
+
+                    <!-- Amount Entry -->
+                    <TextBox
+                    x:Name="txtUpAmount"
+                    Margin="0,8,0,0"
+                    Width="350"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Amount"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                    <!-- Note Entry -->
+                    <TextBox
+                    x:Name="txtUpNote"
+                    Margin="0,8,0,0"
+                    Width="350"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Note"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                    <!-- Date Picker -->
+                    <DatePicker
+                    x:Name="dpUpTransactionDate"
+                    Width="350"
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Transaction Date"
+                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}">
+                        <DatePicker.Resources>
+                            <Style
+                            x:Key="CustomCalendarDayButton"
+                            TargetType="CalendarDayButton"
+                            BasedOn="{StaticResource MaterialDesignCalendarDayButton}">
+                                <Setter Property="materialDesign:CalendarAssist.SelectionColor" Value="#8470FF" />
+                                <Setter Property="materialDesign:CalendarAssist.SelectionForegroundColor" Value="#BFB7FF" />
+                            </Style>
+                            <Style
+                    x:Key="CustomCalendarButton"
+                    TargetType="CalendarButton"
+                    BasedOn="{StaticResource MaterialDesignCalendarButton}">
+                                <Setter Property="materialDesign:CalendarAssist.SelectionColor" Value="#8470FF" />
+                                <Setter Property="materialDesign:CalendarAssist.SelectionForegroundColor" Value="White" />
+                            </Style>
+                            <Style
+                    x:Key="CustomCalendar"
+                    TargetType="{x:Type Calendar}"
+                    BasedOn="{StaticResource MaterialDesignDatePickerCalendarPortrait}">
+                                <Setter Property="Background" Value="#F5F4FF" />
+                                <Setter Property="CalendarButtonStyle" Value="{StaticResource CustomCalendarButton}" />
+                                <Setter Property="CalendarDayButtonStyle" Value="{StaticResource CustomCalendarDayButton}" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="materialDesign:CalendarAssist.HeaderBackground" Value="#8470FF" />
+                                <Setter Property="materialDesign:CalendarAssist.HeaderForeground" Value="Black" />
+                            </Style>
+                            <Style
+                    TargetType="DatePicker"
+                    BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+                                <Setter Property="CalendarStyle" Value="{StaticResource CustomCalendar}" />
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+
+                    <!-- Action Buttons -->
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,15,8,0">
+                        <Button
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Content="Cancel"
+                IsDefault="True"
+                Style="{StaticResource MaterialDesignFlatButton}">
+                            <Button.CommandParameter>
+                                <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">False</system:Boolean>
+                            </Button.CommandParameter>
+                        </Button>
+                        <Button
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Content="Update"
+                IsCancel="True"
+                Style="{StaticResource MaterialDesignFlatButton}" Click="btnUpdate"/>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+
 
             <!-- Trigger Button -->
             <Border MinHeight="256" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1" ClipToBounds="True">
@@ -309,10 +394,10 @@
                 Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
                 BorderBrush="#FF8470FF"
                 Foreground="White" />
-
                 </Grid>
             </Border>
         </materialDesign:DialogHost>
+
         <ComboBox HorizontalAlignment="Left" Margin="286,95,0,0" VerticalAlignment="Top" Width="120"/>
         <ComboBox HorizontalAlignment="Left" Margin="415,95,0,0" VerticalAlignment="Top" Width="120"/>
 
@@ -459,12 +544,7 @@
         VerticalAlignment="Center"
         HorizontalAlignment="Center"
         Padding="10">
-
-              
-
             </TextBlock>
         </Border>
-
-
     </Grid>
 </UserControl>
