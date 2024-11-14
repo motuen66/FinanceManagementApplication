@@ -1,5 +1,5 @@
-﻿using GalaSoft.MvvmLight;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
+using GalaSoft.MvvmLight;
 
 namespace FinanceManagementApp.Domain;
 
@@ -13,7 +13,7 @@ public class SampleItem : ViewModelBase
     public object? Notification
     {
         get { return _notification; }
-        set { Set(ref _notification, value); }
+        set { SetProperty(ref _notification, value); }
     }
 
 }
