@@ -10,6 +10,10 @@
                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Purple" SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="pack://application:,,,/FinanceManagementApp;component/Fonts/#Poppins" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
