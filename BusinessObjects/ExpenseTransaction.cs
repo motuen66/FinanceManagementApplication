@@ -13,7 +13,7 @@ public partial class ExpenseTransaction
 
     public decimal Amount { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime? Date { get; set; }
 
     public virtual BudgetItem? Budget { get; set; }
 

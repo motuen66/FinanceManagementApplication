@@ -11,9 +11,9 @@ public partial class FinanceRecord
 
     public int? TotalExpense { get; set; }
 
-    public DateOnly? From { get; set; }
+    public int? Month { get; set; }
 
-    public DateOnly? To { get; set; }
+    public int? Year { get; set; }
 
     public virtual User? User { get; set; }
 }

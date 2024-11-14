@@ -71,12 +71,12 @@ namespace DataAccessLayer
             }
         }
 
-        public static FinanceRecord GetFinanceRecordByUserId(int userId)
+        public static FinanceRecord GetFinanceRecord(int userId, int month, int year)
         {
             try
             {
                 var context = new FinanceManagementApplicationContext();
-                return context.FinanceRecords.FirstOrDefault(r => r.UserId == userId);
+                return context.FinanceRecords.FirstOrDefault(r => r.UserId == userId && r.Month == month && r.Year == year);
             }
             catch (Exception ex)
             {

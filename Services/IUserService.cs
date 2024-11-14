@@ -18,6 +18,6 @@ namespace Services
         void UpdateFinanceRecord(FinanceRecord financeRecord);
         void DeleteFinanceRecord(FinanceRecord financeRecord);
         List<FinanceRecord> GetFinanceRecords(int userId);
-        FinanceRecord GetFinanceRecordByUserId(int id);
+        FinanceRecord GetFinanceRecord(int id, int month, int  year);
     }
 }
