@@ -1,10 +1,12 @@
-﻿using Google.Apis.Auth;
+﻿using BusinessObjects;
+using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.PeopleService.v1;
 using Google.Apis.PeopleService.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Microsoft.Extensions.Internal;
+using Services;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -17,11 +19,12 @@ namespace FinanceManagementApp
 {
     public partial class LoginWindow : Window
     {
+        private readonly IUserService _userService;
         private readonly string[] Scopes = { "email", "profile" }; // Quyền truy cập email và thông tin hồ sơ
         private readonly string ClientId = "97989824227-03p89bb3vu53nb7r7grb81aio3qrphhm.apps.googleusercontent.com"; // Thay bằng Client ID của bạn
         private readonly string ClientSecret = "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"; // Thay bằng Client Secret của bạn
 
-        private readonly string connectionString = "Data Source=VIETKHIMM\\KHIEMHUYNH;Initial Catalog=FinanceManagementApplication;User ID=sa;Password=30042004";
+        private readonly string connectionString = "Data Source=HOANGHUNG;Initial Catalog=FinanceManagementApplication;User ID=sa;Password=123";
 
         public LoginWindow()
         {
@@ -42,29 +45,17 @@ namespace FinanceManagementApp
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                User u = _userService.GetUser(username, password); 
+                if (u != null)
                 {
-                    conn.Open();
-                    string query = "SELECT COUNT(1) FROM [User] WHERE username = @username AND password = @password";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password", password);
-
-                    int count = Convert.ToInt32(cmd.ExecuteScalar());
-
-                    if (count == 1)
-                    {
-                        MessageBox.Show("CHèo mừng pạn!", "đã rứa trời", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("CHèo mừng pạn!", "đã rứa trời", MessageBoxButton.OK, MessageBoxImage.Information);
                         
-                        Dashboard dashboard = new Dashboard(); 
-                      
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid email or password. Please try again.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    //Dashboard dashboard = new Dashboard(); 
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid email or password. Please try again.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -161,10 +152,10 @@ namespace FinanceManagementApp
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT COUNT(1) FROM [User] WHERE username = @username";
+                    string query = "SELECT COUNT(1) FROM [User] WHERE email = @email";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@username", email);
+                        cmd.Parameters.AddWithValue("@email", email);
                         int count = Convert.ToInt32(cmd.ExecuteScalar());
                         return count == 1;
                     }

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using BusinessObjects;
+using System;
 using System.Collections.Generic;
 
-namespace BusinessObjects.Models;
+namespace BusinessObjects;
 
 public partial class BudgetItem
 {

@@ -31,6 +31,11 @@ namespace Services
         public List<FinanceRecord> GetFinanceRecords(int userId)
             => FinanceRecordDAO.GetFinanceRecords(userId);
 
+        public List<FinanceRecord> GetFinanceRecords()
+        {
+            throw new NotImplementedException();
+        }
+
         public User GetUser(string userName, string password) 
             => UserDAO.getUser(userName, password);
 
