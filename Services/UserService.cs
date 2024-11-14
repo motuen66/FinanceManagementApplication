@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -32,14 +31,20 @@ namespace Services
         public List<FinanceRecord> GetFinanceRecords(int userId)
             => FinanceRecordDAO.GetFinanceRecords(userId);
 
-        public User GetUser(string userName, string password) 
-            => UserDAO.getUser(userName, password);
+        public List<FinanceRecord> GetFinanceRecords()
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetUser(string email, string password) 
+            => UserDAO.getUser(email, password);
 
         public void UpdateFinanceRecord(FinanceRecord financeRecord)
             => FinanceRecordDAO.UpdateFinanceRecord(financeRecord);
 
         public void UpdateUser(User user) 
             => UserDAO.UpdateUser(user);
+            
         public double HandleBalanceComparison(int userId)
         {
             DateTime currentDate = DateTime.Now;
@@ -138,5 +143,8 @@ namespace Services
 
         public List<BudgetItem> GetBudgetItems(int userId)
             => BudgetItemDAO.GetBudgetItems(userId);
+            
+        public User GetUser(string email)
+            => UserDAO.getUser(email);
     }
 }

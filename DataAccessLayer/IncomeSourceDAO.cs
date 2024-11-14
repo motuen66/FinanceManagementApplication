@@ -1,5 +1,5 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
+using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

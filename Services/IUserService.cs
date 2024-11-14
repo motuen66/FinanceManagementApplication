@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +18,7 @@ namespace Services
         void DeleteFinanceRecord(FinanceRecord financeRecord);
         List<FinanceRecord> GetFinanceRecords(int userId);
         FinanceRecord GetFinanceRecord(int id, int month, int  year);
+        FinanceRecord GetFinanceRecordByUserId(int id);
+        User GetUser(string userName);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
