@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,7 +35,7 @@ namespace FinanceManagementApp
         public GoalManagement()
         {
             InitializeComponent();
-            userHeaderControl.ChangedTitleAndSubTitle(ScreenType.Goal);
+            //userHeaderControl.ChangedTitleAndSubTitle(ScreenType.Goal);
             savingService = new SavingService();
             LoadList(1);
         }
@@ -86,6 +87,81 @@ namespace FinanceManagementApp
             txtNumberOfInProgressStatus.Text = countInProgress.ToString();
             txtNumberOfFinishedStatus.Text = countFinished.ToString();
             txtTotalGoal.Text = GoalList.Count.ToString();
+        }
+
+        private void AddGoalButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SavingGoal savingGoal = new SavingGoal();
+                savingGoal.UserId = 1;
+                savingGoal.Title = txtAddTitle.Text;
+                savingGoal.Description = txtAddDescription.Text;
+                savingGoal.CurrentAmount = 0;
+                savingGoal.GoalAmount = Int32.Parse(txtAddAmmount.Text);
+                if (dpAddGoalDate.SelectedDate.HasValue)
+                {
+                    savingGoal.GoalDate = DateOnly.FromDateTime(dpAddGoalDate.SelectedDate.Value);
+                }
+                else
+                {
+                    MessageBox.Show("Please select a valid goal date.");
+                    return;
+                }
+                savingService.CreateSavingGoal(savingGoal);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error occurs when adding new goal");
+            }
+            finally
+            {
+                LoadList(1);
+            }
+        }
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SavingGoal savingGoal = new SavingGoal();
+                savingGoal.UserId = 1;
+                savingGoal.Id = Int32.Parse(txtGoalId.Text);
+                savingGoal.Title = txtTitle.Text;
+                savingGoal.Description = txtUpdateDescription.Text;
+                savingGoal.CurrentAmount = 0;
+                savingGoal.GoalAmount = Int32.Parse(txtUpdateGoalAmmount.Text);
+                if(dpUpdateGoalDate.SelectedDate.HasValue)
+                {
+                    savingGoal.GoalDate = DateOnly.FromDateTime(dpUpdateGoalDate.SelectedDate.Value);
+                }
+                else
+                {
+                    MessageBox.Show("Please select a valid goal date.");
+                    return;
+                }
+                savingService.UpdateSavingGoal(savingGoal);
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error occur when updating");
+            } finally
+            {
+                LoadList(1);
+            }
+        }
+
+        private void btnUpSelectionChange(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Button button && button.Tag is SavingGoal savingGoal)
+            {
+                txtGoalId.Text = savingGoal.Id.ToString();
+                txtTitle.Text = savingGoal.Title;
+                txtUpdateDescription.Text = savingGoal.Description;
+                txtUpdateGoalAmmount.Text = savingGoal.GoalAmount.ToString();
+                dpUpdateGoalDate.SelectedDate = savingGoal.GoalDate.HasValue
+                                                ? savingGoal.GoalDate.Value.ToDateTime(TimeOnly.MinValue)
+                                                : (DateTime?)null;
+            }
         }
     }
 }

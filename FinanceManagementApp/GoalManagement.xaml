@@ -25,7 +25,7 @@
                 </Style>
             </Grid.Resources>
             <Grid Grid.Row="0">
-                <local:UserHeader x:Name="userHeaderControl" Grid.ColumnSpan="2"/>
+                <!--<local:UserHeader x:Name="userHeaderControl" Grid.ColumnSpan="2"/>-->
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -72,7 +72,8 @@
                 </Grid>
 
                 <Grid Grid.Column="1">
-                    <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="White" BorderBrush="Gray"
+                    <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Foreground="White" BorderBrush="Gray" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                CommandTarget="{Binding ElementName=AddNewGoal}"
                         Margin="219,5,59,5" Background="#8470FF"
                         materialDesign:ButtonAssist.CornerRadius="25" Height="56" RenderTransformOrigin="0.5,0.5">
                         <Button.RenderTransform>
@@ -147,15 +148,25 @@
                                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
                                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                                                             <TextBlock  Text="{Binding Title}" FontWeight="Bold" FontSize="18"
-                                                                Height="24" Width="218"/>
+                                                                Height="24" Width="180"/>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock Text="Due Date - " FontWeight="DemiBold" Foreground="Gray"/>
                                                                 <TextBlock Text="{Binding GoalDate}" FontWeight="DemiBold" Foreground="Gray"/>
                                                             </StackPanel>
                                                         </StackPanel>
-                                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Height="30" Width="30" 
+                                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Height="30" Width="30" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                                            CommandTarget="{Binding ElementName=UpdateGoal}"
+                                                                Tag="{Binding}"
+                                                                Click="btnUpSelectionChange"
+                                                                Margin="5,0"
                                                             Foreground="#8470FF" Background="{x:Null}" BorderBrush="#D0D0D4">
                                                             <materialDesign:PackIcon Kind="PenMinus" Height="25" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Button>
+                                                        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" Height="30" Width="30" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                                             CommandTarget="{Binding ElementName=UpdateGoal}"
+                                                                 Tag="{Binding}"
+                                                             Foreground="#8470FF" Background="{x:Null}" BorderBrush="#D0D0D4">
+                                                            <materialDesign:PackIcon Kind="Plus" Height="25" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                         </Button>
                                                     </StackPanel>
                                                 </Grid>
@@ -311,7 +322,8 @@ Background="{x:Null}" Margin="0,0,20,0"
                                         </ComboBox>
                                     </Button>
                                 </StackPanel>
-                                <lvc:CartesianChart Series="{Binding Series}" Height="180" Width="900" Hoverable="False" DataTooltip="{x:Null}">
+                                <lvc:CartesianChart Series="{Binding Series}" Foreground="Black" 
+                                                    Height="180" Width="900" Hoverable="False" DataTooltip="{x:Null}">
                                     <lvc:CartesianChart.AxisX>
                                         <lvc:Axis Title="Months" Labels="{Binding Labels}">
                                             <lvc:Axis.Separator>
@@ -330,5 +342,50 @@ Background="{x:Null}" Margin="0,0,20,0"
                 </Grid>
             </Grid>
         </Grid>
+
+        <materialDesign:DialogHost x:Name="AddNewGoal" >
+            <materialDesign:DialogHost.DialogContent>
+
+                <StackPanel Margin="40">
+                    <TextBlock Text="Add New Goal" FontWeight="Bold" FontSize="25" Foreground="#8470FF" Margin="0,0,0,10" TextAlignment="Center" />
+
+                    <TextBox x:Name="txtAddTitle" Width="350" materialDesign:HintAssist.Hint="Goal Title" FontSize="20" Margin="0,10,0,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <TextBox x:Name="txtAddDescription" Width="350" materialDesign:HintAssist.Hint="Description" FontSize="20"  Margin="0,10,0,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <TextBox x:Name="txtAddAmmount" Width="350" materialDesign:HintAssist.Hint="Goal Amount" FontSize="20"  Margin="0,10,0,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <DatePicker x:Name="dpAddGoalDate" Width="350" FontSize="20" materialDesign:HintAssist.Hint="Goal Date" Margin="0,10,0,10"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnAddButton" Click="AddGoalButton_Click" Content="Add" FontSize="19" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{StaticResource MaterialDesignFlatButton}" />
+                        <Button Content="Cancel" FontSize="19" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{StaticResource MaterialDesignFlatButton}" />
+                    </StackPanel>
+
+                </StackPanel>
+
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
+        <materialDesign:DialogHost x:Name="UpdateGoal" >
+            <materialDesign:DialogHost.DialogContent>
+
+                <StackPanel Margin="40">
+                    <TextBlock Text="Update Goal" FontWeight="Bold" FontSize="25" Foreground="#8470FF" Margin="0,0,0,10" TextAlignment="Center" />
+
+                    <TextBox x:Name="txtGoalId" Visibility="Collapsed" Width="350" materialDesign:HintAssist.Hint="Description" FontSize="20"  Margin="0,10,0,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <TextBox x:Name="txtTitle" Visibility="Collapsed" Width="350" materialDesign:HintAssist.Hint="Description" FontSize="20"  Margin="0,10,0,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    
+                    <TextBox x:Name="txtUpdateDescription" Width="350" materialDesign:HintAssist.Hint="Description" FontSize="20"  Margin="0,10,0,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <TextBox x:Name="txtUpdateGoalAmmount" Width="350" materialDesign:HintAssist.Hint="Goal Amount" FontSize="20" Margin="0,10,0,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <DatePicker x:Name="dpUpdateGoalDate" FontSize="20" Width="350" materialDesign:HintAssist.Hint="Goal Date" Margin="0,10,0,10"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Click="UpdateButton_Click" Content="Update" FontSize="19" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{StaticResource MaterialDesignFlatButton}" />
+                        <Button Content="Cancel" FontSize="19" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{StaticResource MaterialDesignFlatButton}" />
+                    </StackPanel>
+
+                </StackPanel>
+
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
     </Grid>
 </UserControl>
