@@ -135,10 +135,6 @@ namespace FinanceManagementApp
                         MessageBox.Show("Unable to retrieve email from Google account.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Google sign-in failed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
             catch (Exception ex)
             {

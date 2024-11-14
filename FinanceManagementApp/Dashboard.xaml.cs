@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
 using LiveCharts.Wpf;
 using LiveCharts;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -80,9 +79,16 @@ namespace FinanceManagementApp
         //Handle balance percentage
         private void CalculateBalanceChangePerxentage()
         {
-            int id = UserSession.Instance.Id;
-            _balanceChangePercentage = _userService.HandleBalanceComparison(id);
-            BalanceChangePercentage = _balanceChangePercentage;
+            try
+            {
+                int id = UserSession.Instance.Id;
+                _balanceChangePercentage = _userService.HandleBalanceComparison(id);
+                BalanceChangePercentage = _balanceChangePercentage;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         public double BalanceChangePercentage
         {
@@ -133,9 +139,16 @@ namespace FinanceManagementApp
         //Handle income percentage
         private void CalculateIncomeChangePerxentage()
         {
-            int id = UserSession.Instance.Id;
-            _incomeChangePercentage = _userService.HandleIncomeComparison(id);
-            IncomeChangePercentage = _incomeChangePercentage;
+            try
+            {
+                int id = UserSession.Instance.Id;
+                _incomeChangePercentage = _userService.HandleIncomeComparison(id);
+                IncomeChangePercentage = _incomeChangePercentage;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         public double IncomeChangePercentage
         {
@@ -188,9 +201,16 @@ namespace FinanceManagementApp
         // Handle expense percentage
         private void CalculateExpenseChangePercentage()
         {
-            int id = UserSession.Instance.Id;
-            _expenseChangePercentage = _userService.HandleExpenseComparison(id);
-            ExpenseChangePercentage = _expenseChangePercentage;
+            try
+            {
+                int id = UserSession.Instance.Id;
+                _expenseChangePercentage = _userService.HandleExpenseComparison(id);
+                ExpenseChangePercentage = _expenseChangePercentage;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public double ExpenseChangePercentage
@@ -217,16 +237,23 @@ namespace FinanceManagementApp
         private string _savingNeeded;
         private void GetCurrentSavingAndGoal()
         {
-            DateTime currentDate = DateTime.Now;
-            int userId = UserSession.Instance.Id;
-            int currMonth = currentDate.Month;
-            int currYear = currentDate.Year;
-            SavingGoal currentSavingGoalStatus = _savingService.GetCurrentTotalSavingGoalAndTotalGoalAmount(userId, currentDate);
-            int? currSaving = currentSavingGoalStatus.CurrentAmount;
-            int? goalAmount = currentSavingGoalStatus.GoalAmount;
+            try
+            {
+                DateTime currentDate = DateTime.Now;
+                int userId = UserSession.Instance.Id;
+                int currMonth = currentDate.Month;
+                int currYear = currentDate.Year;
+                SavingGoal currentSavingGoalStatus = _savingService.GetCurrentTotalSavingGoalAndTotalGoalAmount(userId, currentDate);
+                int? currSaving = currentSavingGoalStatus.CurrentAmount;
+                int? goalAmount = currentSavingGoalStatus.GoalAmount;
 
-            _totalCurrentSavingAmount = currSaving.ToString();
-            _savingNeeded = (goalAmount - currSaving).ToString();
+                _totalCurrentSavingAmount = currSaving.ToString();
+                _savingNeeded = (goalAmount - currSaving).ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public string SavingNeeded
@@ -254,31 +281,33 @@ namespace FinanceManagementApp
 
         private void LoadDataForLastFiveMonths()
         {
-            var incomeValues = new ChartValues<double>();
-            var expenseValues = new ChartValues<double>();
-            var labels = new List<string>();
-
-            for (int i = 4; i >= 0; i--)
+            try
             {
-                var date = DateTime.Now.AddMonths(-i);
-                int month = date.Month;
-                int year = date.Year;
-                int id = UserSession.Instance.Id;
+                var incomeValues = new ChartValues<double>();
+                var expenseValues = new ChartValues<double>();
+                var labels = new List<string>();
 
-                FinanceRecord financeRecord = _userService.GetFinanceRecord(id, month, year);
+                for (int i = 4; i >= 0; i--)
+                {
+                    var date = DateTime.Now.AddMonths(-i);
+                    int month = date.Month;
+                    int year = date.Year;
+                    int id = UserSession.Instance.Id;
 
-                int income = financeRecord?.TotalIncome ?? 0;
-                int expense = financeRecord?.TotalExpense ?? 0;
+                    FinanceRecord financeRecord = _userService.GetFinanceRecord(id, month, year);
 
-                incomeValues.Add(income);
-                expenseValues.Add(expense);
-                labels.Add($"{month}/{year}");
-            }
+                    int income = financeRecord?.TotalIncome ?? 0;
+                    int expense = financeRecord?.TotalExpense ?? 0;
 
-            var incomeColor = (Brush)new BrushConverter().ConvertFromString("#8470FF");
-            var expenseColor = (Brush)new BrushConverter().ConvertFromString("#D6D2FF");
+                    incomeValues.Add(income);
+                    expenseValues.Add(expense);
+                    labels.Add($"{month}/{year}");
+                }
 
-            SeriesCollection = new SeriesCollection
+                var incomeColor = (Brush)new BrushConverter().ConvertFromString("#8470FF");
+                var expenseColor = (Brush)new BrushConverter().ConvertFromString("#D6D2FF");
+
+                SeriesCollection = new SeriesCollection
             {
                 new ColumnSeries
                 {
@@ -286,7 +315,7 @@ namespace FinanceManagementApp
                     Values = incomeValues,
                     Stroke = incomeColor,
                     Fill = incomeColor,
-                    DataLabels = true 
+                    DataLabels = true
                 },
                 new ColumnSeries
                 {
@@ -297,8 +326,13 @@ namespace FinanceManagementApp
                     DataLabels = true
                 }
             };
-            Labels = labels.ToArray();
-            YFormatter = value => $"{value:n0},000VND";
+                Labels = labels.ToArray();
+                YFormatter = value => $"{value:n0},000VND";
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private SeriesCollection _budgetSeriesCollection;

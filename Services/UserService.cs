@@ -146,5 +146,10 @@ namespace Services
             
         public User GetUser(string email)
             => UserDAO.getUser(email);
+
+        public FinanceRecord GetFinanceRecordByUserId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

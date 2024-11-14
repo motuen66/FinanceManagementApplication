@@ -87,18 +87,19 @@ namespace DataAccessLayer
             }
         }
 
-        //public static int? GetCurrentTotalSavingAmount(int userId, DateTime date)
-        //{
-        //    var context = new FinanceManagementApplicationContext();
-        //    DateTime startOfMonth = new DateTime(date.Year, date.Month, 1);
-        //    DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+        public static int? GetCurrentTotalSavingAmount(int userId, DateTime date)
+        {
+            var context = new FinanceManagementApplicationContext();
+            DateTime startOfMonth = new DateTime(date.Year, date.Month, 1);
+            DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
 
-        //    int? totalCurrentAmount = context.SavingGoals.Where(sg => sg.UserId == userId &&
-        //             sg.GoalDate >= startOfMonth &&
-        //             sg.GoalDate <= endOfMonth &&
-        //             sg.IsCompleted == false).Sum(sg => sg.CurrentAmount);
-        //    return totalCurrentAmount;
-        //}
+            int? totalCurrentAmount = context.SavingGoals.Where(sg => sg.UserId == userId &&
+                     sg.GoalDate >= startOfMonth &&
+                     sg.GoalDate <= endOfMonth &&
+                     sg.IsCompleted == false).Sum(sg => sg.CurrentAmount);
+            return totalCurrentAmount;
+        }
+
         public static SavingGoal GetCurrentTotalSavingGoalAndTotalGoalAmount(int userId, DateTime date)
         {
             using (var context = new FinanceManagementApplicationContext())
