@@ -1,4 +1,5 @@
-﻿using BusinessObjects;
+﻿using FinanceManagementApp.Domain;
+using BusinessObjects;
 using LiveCharts.Wpf;
 using LiveCharts;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -36,6 +37,7 @@ namespace FinanceManagementApp
         public Dashboard()
         {
             InitializeComponent();
+            userHeaderControl.ChangedTitleAndSubTitle(ScreenType.Dashboard);
             _userService = new UserService();
             _savingService = new SavingService();
             _expenseService = new ExpenseService();
@@ -492,7 +494,6 @@ namespace FinanceManagementApp
 
         private void Button_ToBudget_Click(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

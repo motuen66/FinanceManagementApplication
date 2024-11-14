@@ -13,6 +13,18 @@
              Height="878">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="materialDesign:PackIcon">
+                <Setter Property="Width" Value="30"></Setter>
+                <Setter Property="Height" Value="30"></Setter>
+            </Style>
+        </Grid.Resources>
+
+        <local:UserHeader x:Name="userHeaderControl" Grid.ColumnSpan="2"/>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" MinHeight="80" />
                 <RowDefinition Height="245" />

@@ -20,6 +20,14 @@ namespace DataAccessLayer
                 using var context = new FinanceManagementApplicationContext();
                 budgetItems = context.BudgetItems
                                     .Where(b => b.UserId == userId)
+                                    .Select(b => new BudgetItem
+                                    {
+                                        Id = b.Id,
+                                        UserId = b.UserId,
+                                        BudgetName = b.BudgetName,
+                                        LimitAmount = b.LimitAmount,
+                                        CurrentAmount = context.ExpenseTransactions.Where(et => et.BudgetId == b.Id).Sum(et => (int) et.Amount)
+                                    })
                                     .ToList();
                  return budgetItems;
             }
