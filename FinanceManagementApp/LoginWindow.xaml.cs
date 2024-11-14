@@ -34,10 +34,10 @@ namespace FinanceManagementApp
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
-            string username = txtUsername.Text;
+            string email = txtEmail.Text;
             string password = txtPassword.Password;
 
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Please enter both email and password.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -45,12 +45,12 @@ namespace FinanceManagementApp
 
             try
             {
-                User u = _userService.GetUser(username, password); 
+                User u = _userService.GetUser(email, password); 
                 if (u != null)
                 {
-                    MessageBox.Show("CHèo mừng pạn!", "đã rứa trời", MessageBoxButton.OK, MessageBoxImage.Information);
-                        
-                    //Dashboard dashboard = new Dashboard(); 
+                    UserSession.Instance.SetUser(u);
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
                     this.Close();
                 }
                 else
@@ -116,10 +116,13 @@ namespace FinanceManagementApp
                     if (email != null)
                     {
                         // Kiểm tra email trong cơ sở dữ liệu
-                        if (IsEmailInDatabase(email))
+                        User u = _userService.GetUser(email);
+                        if (u != null)
                         {
-                            MessageBox.Show("Google login successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                            Dashboard dashboard = new Dashboard();
+                            UserSession.Instance.SetUser(u);
+                            MessageBox.Show("Sign in successfully!");
+                            MainWindow mainWindow = new MainWindow();
+                            mainWindow.Show();
                             this.Close();
                         }
                         else
@@ -140,31 +143,6 @@ namespace FinanceManagementApp
             catch (Exception ex)
             {
                 MessageBox.Show("Google sign-in failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-
-        // Hàm kiểm tra email trong cơ sở dữ liệu
-        private bool IsEmailInDatabase(string email)
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = "SELECT COUNT(1) FROM [User] WHERE email = @email";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@email", email);
-                        int count = Convert.ToInt32(cmd.ExecuteScalar());
-                        return count == 1;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
             }
         }
 

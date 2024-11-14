@@ -82,9 +82,9 @@
                 <!--Inputs-->
                 <StackPanel  VerticalAlignment="Center" Margin="75 0">
                     <!-- Username -->
-                    <TextBox x:Name="txtUsername" BorderThickness="0 0 0 1" BorderBrush="#C5C8CC"
+                    <TextBox x:Name="txtEmail" BorderThickness="0 0 0 1" BorderBrush="#C5C8CC"
              materialDesign:HintAssist.FloatingOffset="0,-20"
-             materialDesign:HintAssist.Hint="Username"
+             materialDesign:HintAssist.Hint="Email"
              Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
              Margin="0 0 0 20"/>
 

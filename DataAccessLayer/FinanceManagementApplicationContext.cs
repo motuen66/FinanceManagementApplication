@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
-
 namespace DataAccessLayer;
 
 public partial class FinanceManagementApplicationContext : DbContext
@@ -222,6 +221,9 @@ public partial class FinanceManagementApplicationContext : DbContext
                 .HasMaxLength(32)
                 .IsUnicode(false)
                 .HasColumnName("password");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .HasColumnName("email");
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .HasColumnName("username");

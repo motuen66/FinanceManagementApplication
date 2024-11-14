@@ -46,10 +46,16 @@ namespace DataAccessLayer
             context.SaveChanges();
         }
 
-        public static User? getUser(string username, string password)
+        public static User? getUser(string email, string password)
         {
             using var context = new FinanceManagementApplicationContext(); 
-            return (context.Users.FirstOrDefault(u => username.Equals(u.Username) && password.Equals(u.Password)));
+            return (context.Users.FirstOrDefault(u => email.Equals(u.Email) && password.Equals(u.Password)));
+        }
+
+        public static User? getUser(string email)
+        {
+            using var context = new FinanceManagementApplicationContext();
+            return (context.Users.FirstOrDefault(u => email.Equals(u.Email)));
         }
     }
 }

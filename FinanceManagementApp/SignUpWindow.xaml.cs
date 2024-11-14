@@ -30,12 +30,12 @@ namespace FinanceManagementApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string username = txtUsername.Text;
+            string email = txtEmail.Text;
             string password = txtPassword.Password;
             string repeatPassword = txtRepeatPassword.Password;
 
             // Kiểm tra các trường không được để trống
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(repeatPassword))
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(repeatPassword))
             {
                 MessageBox.Show("Please fill in all fields.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -49,7 +49,7 @@ namespace FinanceManagementApp
             }
 
             // Kiểm tra nếu người dùng đã tồn tại
-            if (IsUserExists(username))
+            if (IsUserExists(email))
             {
                 MessageBox.Show("Username already exists. Please choose a different username.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -58,7 +58,7 @@ namespace FinanceManagementApp
             // Tạo đối tượng User mới
             User newUser = new User
             {
-                Username = username,
+                Email = email,
                 Password = password, // Bạn có thể mã hóa mật khẩu trước khi lưu
                 
             };
@@ -74,11 +74,11 @@ namespace FinanceManagementApp
         }
 
         // Kiểm tra người dùng đã tồn tại trong cơ sở dữ liệu chưa
-        private bool IsUserExists(string username)
+        private bool IsUserExists(string email)
         {
             using (var context = new FinanceManagementApplicationContext())
             {
-                return context.Users.Any(u => u.Username == username);
+                return context.Users.Any(u => u.Email == email);
             }
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

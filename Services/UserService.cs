@@ -35,13 +35,15 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public User GetUser(string userName, string password) 
-            => UserDAO.getUser(userName, password);
+        public User GetUser(string email, string password) 
+            => UserDAO.getUser(email, password);
 
         public void UpdateFinanceRecord(FinanceRecord financeRecord)
             => FinanceRecordDAO.UpdateFinanceRecord(financeRecord);
 
         public void UpdateUser(User user) 
             => UserDAO.UpdateUser(user);
+        public User GetUser(string email)
+            => UserDAO.getUser(email);
     }
 }

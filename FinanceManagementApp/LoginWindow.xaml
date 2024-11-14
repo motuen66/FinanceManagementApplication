@@ -52,8 +52,8 @@
                 <StackPanel VerticalAlignment="Center" Margin="75 0">
                     <TextBox BorderThickness="0 0 0 1.5" BorderBrush="#C5C8CC"
          materialDesign:HintAssist.FloatingOffset="0,-20"
-         materialDesign:HintAssist.Hint="Username"
-                             x:Name="txtUsername"
+         materialDesign:HintAssist.Hint="Email"
+                             x:Name="txtEmail"
          Margin="0 27 0 27"
          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 

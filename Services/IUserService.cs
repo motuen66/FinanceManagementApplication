@@ -18,5 +18,6 @@ namespace Services
         void DeleteFinanceRecord(FinanceRecord financeRecord);
         List<FinanceRecord> GetFinanceRecords(int userId);
         FinanceRecord GetFinanceRecordByUserId(int id);
+        User GetUser(string userName);
     }
 }
