@@ -1,4 +1,5 @@
-﻿using FinanceManagementApp.Domain;
+﻿using BusinessObjects;
+using FinanceManagementApp.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace FinanceManagementApp
         public UserHeader()
         {
             InitializeComponent();
+            txtUsername.Text = UserSession.Instance.Username;
         }
 
         public void ChangedTitleAndSubTitle(ScreenType screenType)

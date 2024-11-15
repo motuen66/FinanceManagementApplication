@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataAccessLayer
 {
@@ -110,6 +110,48 @@ namespace DataAccessLayer
             catch (Exception ex)
             {
                 throw new Exception("An error occurred while retrieving monthly expenses.", ex);
+            }
+        }
+
+      public static int? GetCurrentTotalSavingAmount(int userId, DateTime date)
+        {
+            var context = new FinanceManagementApplicationContext();
+            DateTime startOfMonth = new DateTime(date.Year, date.Month, 1);
+            DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+
+            int? totalCurrentAmount = context.SavingGoals.Where(sg => sg.UserId == userId &&
+                     sg.GoalDate >= startOfMonth &&
+                     sg.GoalDate <= endOfMonth &&
+                     sg.IsCompleted == false).Sum(sg => sg.CurrentAmount);
+            return totalCurrentAmount;
+        }
+
+        public static SavingGoal GetCurrentTotalSavingGoalAndTotalGoalAmount(int userId, DateTime date)
+        {
+            using (var context = new FinanceManagementApplicationContext())
+            {
+                DateTime startOfMonth = new DateTime(date.Year, date.Month, 1);
+                DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+
+                var result = context.SavingGoals
+                    .Where(sg => sg.UserId == userId &&
+                                 sg.GoalDate >= startOfMonth &&
+                                 sg.GoalDate <= endOfMonth &&
+                                 sg.IsCompleted == false)
+                    .GroupBy(sg => sg.UserId)
+                    .Select(g => new
+                    {
+                        TotalCurrentAmount = g.Sum(sg => (int?)sg.CurrentAmount) ?? 0,
+                        TotalGoalAmount = g.Sum(sg => (int?)sg.GoalAmount) ?? 0
+                    })
+                    .FirstOrDefault();
+
+                return new SavingGoal
+                {
+                    UserId = userId,
+                    CurrentAmount = result?.TotalCurrentAmount ?? 0,
+                    GoalAmount = result?.TotalGoalAmount ?? 0
+                };
             }
         }
     }

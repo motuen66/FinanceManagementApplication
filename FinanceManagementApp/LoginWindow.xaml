@@ -52,8 +52,8 @@
                 <StackPanel VerticalAlignment="Center" Margin="75 0">
                     <TextBox BorderThickness="0 0 0 1.5" BorderBrush="#C5C8CC"
          materialDesign:HintAssist.FloatingOffset="0,-20"
-         materialDesign:HintAssist.Hint="Username"
-                             x:Name="txtUsername"
+         materialDesign:HintAssist.Hint="Email"
+                             x:Name="txtEmail"
          Margin="0 27 0 27"
          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
@@ -61,8 +61,16 @@
 
                     <StackPanel Orientation="Horizontal" Height="98">
                         <Button Content="Sign in" Background="#8470ff" Foreground="#ffffff" FontSize="18" materialDesign:ButtonAssist.CornerRadius="22" Height="46" Width="108" Click="SignInButton_Click"/>
-                        <Button Content="or Sign up" materialDesign:ButtonAssist.CornerRadius="22" FontSize="16" Height="45" Width="120" Margin="5 0 0 0" Style="{StaticResource MaterialDesignFlatButton}"/>
+                        <Button Content="or Sign up" materialDesign:ButtonAssist.CornerRadius="22" FontSize="16" Height="45" Width="120" Margin="5 0 0 0" Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click"/>
                     </StackPanel>
+                   
+                        <!-- Button for Google Sign-In -->
+                        <Button Content="Sign in with Google" Background="#DB4437" Foreground="#ffffff" FontSize="16" 
+            materialDesign:ButtonAssist.CornerRadius="22" Height="46" Width="177" 
+            Click="GoogleSignInButton_Click"/>
+                       
+                 
+
                 </StackPanel>
             </Grid>
         </Border>

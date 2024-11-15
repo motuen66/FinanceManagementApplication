@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
 
 namespace FinanceManagementApp.Domain;
 

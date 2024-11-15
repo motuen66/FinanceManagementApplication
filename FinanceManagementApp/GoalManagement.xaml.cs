@@ -5,6 +5,7 @@ using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 using Microsoft.VisualBasic.ApplicationServices;
 using Services;
+using FinanceManagementApp.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

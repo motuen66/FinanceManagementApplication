@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Models;
+﻿using Azure.Identity;
+using BusinessObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace BusinessObjects
         public UserSession() { }
         public int Id { get; set; }
 
+        public string? Email { get; set; }
         public string? Username { get; set; }
 
         public string Password { get; set; } = null!;
@@ -29,6 +31,7 @@ namespace BusinessObjects
         public void SetUser(User user)
         {
             Id = user.Id;
+            Email = user.Email;
             Username = user.Username;
             Password = user.Password;
             Balance = user.Balance;

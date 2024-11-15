@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections;
@@ -85,7 +84,8 @@ namespace Services
 
         public void UpdateSavingTransaction(SavingTransaction savingTransaction)
             => SavingTransactionDAO.UpdateSavingTransaction(savingTransaction);
-
-
+            
+        public SavingGoal GetCurrentTotalSavingGoalAndTotalGoalAmount(int userId, DateTime currentDate)
+        => SavingGoalDAO.GetCurrentTotalSavingGoalAndTotalGoalAmount(userId, currentDate);
     }
 }

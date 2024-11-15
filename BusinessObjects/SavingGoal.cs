@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BusinessObjects.Models;
+namespace BusinessObjects;
 
 public partial class SavingGoal
 {
     public int Id { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
     public string? Title { get; set; }
 
@@ -17,7 +17,7 @@ public partial class SavingGoal
 
     public int? GoalAmount { get; set; }
 
-    public DateOnly? GoalDate { get; set; }
+    public DateTime? GoalDate { get; set; }
 
     public bool? IsCompleted { get; set; }
 
@@ -40,4 +40,5 @@ public partial class SavingGoal
     }
 
     public virtual User? User { get; set; }
+
 }
