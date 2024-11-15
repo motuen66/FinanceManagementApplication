@@ -185,7 +185,7 @@ public partial class FinanceManagementApplicationContext : DbContext
                     tb.HasTrigger("trg_UpdateSavingGoalAfterDelete");
                     tb.HasTrigger("trg_UpdateSavingGoalAfterInsert");
                 });
-            entity.Property(e => e.id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Amount).HasColumnName("amount");
             entity.Property(e => e.Date)
                 .HasDefaultValueSql("(CONVERT([date],getdate()))")

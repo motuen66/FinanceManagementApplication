@@ -92,10 +92,10 @@ namespace DataAccessLayer
             try
             {
                 using var context = new FinanceManagementApplicationContext();
-                var currentDate = DateOnly.FromDateTime(DateTime.Now); // Convert DateTime to DateOnly for comparison
+                //var currentDate = DateTime.Now; // Convert DateTime to DateOnly for comparison
 
                 var monthlyExpenses = context.SavingGoals
-                    .Where(sg => sg.UserId == userId && sg.GoalDate.HasValue && sg.GoalDate.Value <= currentDate)
+                    .Where(sg => sg.UserId == userId)
                     .GroupBy(sg => sg.GoalDate.Value.Month)
                     .Select(g => new MonthlyExpense
                     {

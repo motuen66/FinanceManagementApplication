@@ -1,4 +1,4 @@
-﻿using BusinessObjects.Models;
+﻿using BusinessObjects;
 using FinanceManagementApp.Domain;
 using LiveCharts;
 using LiveCharts.Helpers;
@@ -54,7 +54,7 @@ namespace FinanceManagementApp
             int countFinished = 0;
             foreach (var item in GoalList)
             {
-                if (item.GoalDate.HasValue && item.GoalDate.Value > DateOnly.FromDateTime(DateTime.Now) && item.CurrentAmount == 0)
+                if (item.GoalDate.HasValue && item.GoalDate.Value > DateTime.Now && item.CurrentAmount == 0)
                 {
                     countNotStarted++;
                 }
@@ -62,12 +62,12 @@ namespace FinanceManagementApp
                 {
                     countFinished++;
                 }
-                if (item.GoalDate.HasValue && item.GoalDate.Value > DateOnly.FromDateTime(DateTime.Now) && item.CurrentAmount > 0)
+                if (item.GoalDate.HasValue && item.GoalDate.Value > DateTime.Now && item.CurrentAmount > 0)
                 {
                     countInProgress++;
                 }
             }
-            (List<string> monthLabels, List<double> doubles) chartData = savingService.Labels();
+            (List<string> monthLabels, List<double> doubles) chartData = savingService.Labels(UserSession.Instance.Id);
             MonthLabels = chartData.monthLabels;
             ExpenseSeries = new SeriesCollection
             {
@@ -102,7 +102,7 @@ namespace FinanceManagementApp
                 savingGoal.GoalAmount = Int32.Parse(txtAddAmmount.Text);
                 if (dpAddGoalDate.SelectedDate.HasValue)
                 {
-                    savingGoal.GoalDate = DateOnly.FromDateTime(dpAddGoalDate.SelectedDate.Value);
+                    savingGoal.GoalDate = dpAddGoalDate.SelectedDate.Value;
                 }
                 else
                 {
@@ -134,7 +134,7 @@ namespace FinanceManagementApp
                 savingGoal.GoalAmount = Int32.Parse(txtUpdateGoalAmmount.Text);
                 if(dpUpdateGoalDate.SelectedDate.HasValue)
                 {
-                    savingGoal.GoalDate = DateOnly.FromDateTime(dpUpdateGoalDate.SelectedDate.Value);
+                    savingGoal.GoalDate = dpUpdateGoalDate.SelectedDate.Value;
                 }
                 else
                 {
@@ -162,7 +162,7 @@ namespace FinanceManagementApp
                 transaction.Amount = Int32.Parse(txtTransactionAmount.Text);
                 if (dpTransactionGoalDate.SelectedDate.HasValue)
                 {
-                    transaction.Date = DateOnly.FromDateTime(dpTransactionGoalDate.SelectedDate.Value);
+                    transaction.Date = dpTransactionGoalDate.SelectedDate.Value;
                 }
                 else
                 {
@@ -191,7 +191,7 @@ namespace FinanceManagementApp
                 txtUpdateCurentAmmount.Text = savingGoal.CurrentAmount.ToString();
                 txtUpdateGoalAmmount.Text = savingGoal.GoalAmount.ToString();
                 dpUpdateGoalDate.SelectedDate = savingGoal.GoalDate.HasValue
-                                                ? savingGoal.GoalDate.Value.ToDateTime(TimeOnly.MinValue)
+                                                ? savingGoal.GoalDate.Value
                                                 : (DateTime?)null;
             }
         }

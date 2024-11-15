@@ -13,24 +13,13 @@
              Height="878">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid>
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" MinHeight="80" />
                 <RowDefinition Height="245" />
                 <RowDefinition Height="400" />
-                <RowDefinition Height="450" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.Resources>
-                    <Style TargetType="materialDesign:PackIcon">
-                        <Setter Property="Width" Value="30"></Setter>
-                        <Setter Property="Height" Value="30"></Setter>
-                    </Style>
-                </Grid.Resources>
-
                 <local:UserHeader x:Name="userHeaderControl" Grid.ColumnSpan="2"/>
             </Grid>
             <Grid Grid.Row="1">
@@ -552,84 +541,7 @@ FontSize="24" FontWeight="DemiBold" VerticalAlignment="Center" Margin="10,0,0,0"
                     </Border>
                 </Grid>
             </Grid>
-            <!-- Internal Grid, Cartesian chart row 4 -->
-            <Grid Grid.Row="3" Margin="0, 20, 0, 50">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0">
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="20" Margin="15, 0, 0, 0">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" Height="42">
-                                <TextBlock Text="Recent Transaction" FontSize="30" FontWeight="SemiBold" Width="899"/>
-                            </StackPanel>
-                            <StackPanel>
-                                <DataGrid
-        AutoGenerateColumns="False"
-        x:Name="dgExpenseTransactions" 
-        CanUserAddRows="False"
-        HeadersVisibility="All"
-        RowBackground="White" 
-        AlternatingRowBackground="White" 
-        Background="White"
-        SelectionMode="Extended"
-        SelectionUnit="Cell"
-        Width="Auto" Height="357">
-                                    <DataGrid.Resources>
-
-                                        <Style TargetType="{x:Type DataGridColumnHeader}">
-                                            <Setter Property="Background" Value="#ECEAFF" />
-                                            <Setter Property="Foreground" Value="#8470FF" />
-                                            <Setter Property="FontWeight" Value="Bold" />
-                                            <Setter Property="FontSize" Value="16" />
-                                            <Setter Property="Height" Value="40" />
-                                            <Setter Property="BorderBrush" Value="#ECEAFF"/>
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                            <!-- Điều chỉnh khoảng cách xung quanh chữ -->
-                                            <Setter Property="Padding" Value="20,0,10,0" />
-                                        </Style>
-                                    </DataGrid.Resources>
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="1*"  IsReadOnly="True" />
-                                        <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="1*" IsReadOnly="True" />
-                                        <DataGridTextColumn Header="Amount" Binding="{Binding AmountStr}" Width="1*" IsReadOnly="True" />
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <Grid Grid.Column="1">
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="20" Margin="15, 0, 15, 0">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" Height="42" Orientation="Horizontal">
-                                <TextBlock Text="Budget Item" FontSize="30" FontWeight="SemiBold" Width="386"/>
-                                <Button
-Foreground="Black"
-Background="White"
-BorderBrush="Black"
-Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-Click="Button_ToBudget_Click">
-                                    <materialDesign:PackIcon Width="30" Height="30" Kind="ArrowTopRight" />
-                                </Button>
-                            </StackPanel>
-                            <StackPanel>
-                                <lvc:CartesianChart Series="{Binding SavingProgressSeries}" 
-                                    AxisY="{Binding YAxis}" 
-                                    AxisX="{Binding XAxis}" 
-                                    LegendLocation="Right" 
-                                    Height="337" 
-                                    Width="432">
-                                </lvc:CartesianChart>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-            </Grid>
         </Grid>
     </ScrollViewer>
 </UserControl>

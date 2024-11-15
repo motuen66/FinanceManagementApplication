@@ -43,8 +43,8 @@ namespace FinanceManagementApp
 
         private void LoadExpenseTransactions()
         {
-            dgExpenseTransactions.ItemsSource = ExpenseTransactionDAO.GetAllExpenseTransactionsById(1);
-            var budgetItems = BudgetItemDAO.GetBudgetItems(1);
+            dgExpenseTransactions.ItemsSource = ExpenseTransactionDAO.GetAllExpenseTransactionsById(UserSession.Instance.Id);
+            var budgetItems = BudgetItemDAO.GetBudgetItems(UserSession.Instance.Id);
             cbBudget.ItemsSource = budgetItems;
             cbBudget.SelectedValuePath = "Id";
             cbBudget.DisplayMemberPath = "BudgetName";

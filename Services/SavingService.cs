@@ -55,11 +55,11 @@ namespace Services
         public List<SavingTransaction> GetSavingTransactions(int userId)
             => SavingTransactionDAO.GetSavingTransactions(userId);
 
-        public (List<string> labels, List<double> series) Labels()
+        public (List<string> labels, List<double> series) Labels(int userId)
         {
             // lbels 
             // boduebl
-            List<MonthlyExpense> expenses = GetMonthlyExpenses(1);
+            List<MonthlyExpense> expenses = GetMonthlyExpenses(userId);
             int month = expenses.Last().Month;
             List<string> monthLabels = new List<string>();
             List<double> totalAmount = new List<double>();

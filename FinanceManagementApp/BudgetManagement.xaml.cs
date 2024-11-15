@@ -1,4 +1,5 @@
-﻿using FinanceManagementApp.Domain;
+﻿using BusinessObjects;
+using FinanceManagementApp.Domain;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace FinanceManagementApp
         {
             try
             {
-                 var budgets =  _service.GetCurrentMonthBudgets(1);
+                 var budgets =  _service.GetCurrentMonthBudgets(UserSession.Instance.Id);
                 var expsenseInfor = _service.GetExpenseInfor(budgets);
 
                 lbBudget.ItemsSource = budgets;
