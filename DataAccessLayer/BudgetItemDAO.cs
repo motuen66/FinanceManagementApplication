@@ -26,10 +26,11 @@ namespace DataAccessLayer
                                         UserId = b.UserId,
                                         BudgetName = b.BudgetName,
                                         LimitAmount = b.LimitAmount,
-                                        CurrentAmount = context.ExpenseTransactions.Where(et => et.BudgetId == b.Id).Sum(et => (int) et.Amount)
+                                        CurrentAmount = context.ExpenseTransactions.Where(et => et.BudgetId == b.Id).Sum(et => (int)et.Amount)
                                     })
                                     .ToList();
-                 return budgetItems;
+                return budgetItems;
+
             }
             catch (Exception ex)
             {

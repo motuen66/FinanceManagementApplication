@@ -63,13 +63,13 @@ public partial class FinanceManagementApplicationContext : DbContext
         modelBuilder.Entity<ExpenseTransaction>(entity =>
         {
             entity
-                .HasNoKey()
                 .ToTable("ExpenseTransaction", tb =>
                 {
                     tb.HasTrigger("trg_UpdateBalanceAfterExpenseDelete");
                     tb.HasTrigger("trg_UpdateBalanceAfterExpenseInsert");
                 });
-
+            entity.Property(e => e.Id)
+                .HasColumnName("id");
             entity.Property(e => e.Amount)
                 .HasColumnName("amount");
             entity.Property(e => e.BudgetId).HasColumnName("budgetId");
