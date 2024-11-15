@@ -21,6 +21,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataAccessLayer;
 using Separator = LiveCharts.Wpf.Separator;
+using System.Dynamic;
 
 namespace FinanceManagementApp
 {
@@ -328,12 +329,16 @@ namespace FinanceManagementApp
                     DataLabels = true
                 }
             };
-                Labels = labels.ToArray();
                 YFormatter = value => $"{value:n0},000VND";
+
+                dynamic data = new ExpandoObject();
+                data.Labels = labels.ToArray();
+                data.YFormatter = YFormatter;
+                this.DataContext = data;
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
         }
 

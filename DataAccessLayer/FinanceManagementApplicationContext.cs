@@ -71,7 +71,6 @@ public partial class FinanceManagementApplicationContext : DbContext
                 });
 
             entity.Property(e => e.Amount)
-                .HasColumnType("money")
                 .HasColumnName("amount");
             entity.Property(e => e.BudgetId).HasColumnName("budgetId");
             entity.Property(e => e.Date)

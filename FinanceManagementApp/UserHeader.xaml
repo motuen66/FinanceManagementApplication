@@ -51,7 +51,7 @@
                             Foreground="#343438" BorderBrush="Gray" Background="{x:Null}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="217">
                             <materialDesign:PackIcon Kind="AccountCircle" Margin="0,0,10,0"/>
-                            <TextBlock Text="Nguyen Minh Thang" VerticalAlignment="Center" FontSize="16" Width="177"/>
+                            <TextBlock x:Name="txtUsername" VerticalAlignment="Center" FontSize="16" Width="177"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>

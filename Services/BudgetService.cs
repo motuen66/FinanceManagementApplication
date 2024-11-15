@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace Services
 
             foreach (var item in budgets)
             {
-                totalExpense += item.CurrentAmount;
+                totalExpense += (int)item.CurrentAmount;
                 limitBudget += (int)item.LimitAmount;
             }
 

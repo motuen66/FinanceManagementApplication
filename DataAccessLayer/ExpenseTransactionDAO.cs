@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
@@ -20,6 +19,18 @@ namespace DataAccessLayer
                           .Include(e => e.Budget)
                           .Include(e => e.User)
                           .Where(e => e.UserId == userId)
+                          .Select(e => new ExpenseTransaction
+                          {
+                              UserId = e.UserId,
+                              BudgetId = e.BudgetId,
+                              Amount = e.Amount,
+                              Date = e.Date,
+                              Budget = new BudgetItem
+                              {
+                                  Id = e.Budget.Id,
+                                  BudgetName = e.Budget.BudgetName
+                              }
+                          })
                           .ToList();
         }
 
