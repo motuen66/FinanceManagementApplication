@@ -77,6 +77,8 @@ namespace DataAccessLayer
                          })
                          .OrderByDescending(t => t.Date)
                          .ToList();
+        }
+
         public static List<ExpenseTransaction> GetExpenseTransactions(int userId)
         {
             using var context = new FinanceManagementApplicationContext();

@@ -116,18 +116,25 @@ namespace FinanceManagementApp
                     if (email != null)
                     {
                         // Kiểm tra email trong cơ sở dữ liệu
-                        User u = _userService.GetUser(email);
-                        if (u != null)
+                        try
                         {
-                            UserSession.Instance.SetUser(u);
-                            MessageBox.Show("Sign in successfully!");
-                            MainWindow mainWindow = new MainWindow();
-                            mainWindow.Show();
-                            this.Close();
+                            User u = _userService.GetUser(email);
+                            if (u != null)
+                            {
+                                UserSession.Instance.SetUser(u);
+                                MessageBox.Show("Sign in successfully!");
+                                MainWindow mainWindow = new MainWindow();
+                                mainWindow.Show();
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Email not found in the database.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            MessageBox.Show("Email not found in the database.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show($"Hello {ex.Message}");
                         }
                     }
                     else
