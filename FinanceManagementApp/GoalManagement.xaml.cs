@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinanceManagementApp.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace FinanceManagementApp
         public GoalManagement()
         {
             InitializeComponent();
+            userHeaderControl.ChangedTitleAndSubTitle(ScreenType.Goal);
         }
     }
 }

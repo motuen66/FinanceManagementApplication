@@ -1,7 +1,7 @@
-﻿using BusinessObjects;
+﻿using System;
+using System.Collections.Generic;
+using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-
 namespace DataAccessLayer;
 
 public partial class FinanceManagementApplicationContext : DbContext
@@ -33,14 +33,7 @@ public partial class FinanceManagementApplicationContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    {
-        var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-        IConfigurationRoot configuration = builder.Build();
-        optionsBuilder.UseSqlServer(configuration.GetConnectionString("FinanceManagementApplication"));
-    }
-
+        => optionsBuilder.UseSqlServer("server=HOANGHUNG;Database=FinanceManagementApplication;uid=sa;pwd=123;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -59,6 +52,12 @@ public partial class FinanceManagementApplicationContext : DbContext
                 .HasDefaultValue(false)
                 .HasColumnName("isOverBudget");
             entity.Property(e => e.LimitAmount).HasColumnName("limitAmount");
+            entity.Property(e => e.UserId).HasColumnName("userId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.BudgetItems)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_BudgetItem_User");
         });
 
         modelBuilder.Entity<ExpenseTransaction>(entity =>
@@ -72,7 +71,6 @@ public partial class FinanceManagementApplicationContext : DbContext
             entity.Property(e => e.Id)
                 .HasColumnName("id");
             entity.Property(e => e.Amount)
-                .HasColumnType("money")
                 .HasColumnName("amount");
             entity.Property(e => e.BudgetId).HasColumnName("budgetId");
             entity.Property(e => e.Date)
@@ -99,8 +97,8 @@ public partial class FinanceManagementApplicationContext : DbContext
                 .HasNoKey()
                 .ToTable("FinanceRecord");
 
-            entity.Property(e => e.From).HasColumnName("from");
-            entity.Property(e => e.To).HasColumnName("to");
+            entity.Property(e => e.Month).HasColumnName("month");
+            entity.Property(e => e.Year).HasColumnName("year");
             entity.Property(e => e.TotalExpense).HasColumnName("totalExpense");
             entity.Property(e => e.TotalIncome).HasColumnName("totalIncome");
             entity.Property(e => e.UserId).HasColumnName("userId");
@@ -197,10 +195,16 @@ public partial class FinanceManagementApplicationContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("note");
             entity.Property(e => e.SavingGoalId).HasColumnName("savingGoalId");
+            entity.Property(e => e.UserId).HasColumnName("userId");
 
             entity.HasOne(d => d.SavingGoal).WithMany()
                 .HasForeignKey(d => d.SavingGoalId)
                 .HasConstraintName("FK_SavingTransaction_SavingGoal");
+
+            entity.HasOne(d => d.User).WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_SavingTransaction_User");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -216,6 +220,9 @@ public partial class FinanceManagementApplicationContext : DbContext
                 .HasMaxLength(32)
                 .IsUnicode(false)
                 .HasColumnName("password");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .HasColumnName("email");
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .HasColumnName("username");

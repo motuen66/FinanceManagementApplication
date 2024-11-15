@@ -1,4 +1,5 @@
-﻿using FinanceManagementApp.Domain;
+﻿using BusinessObjects;
+using FinanceManagementApp.Domain;
 using MaterialDesignThemes.Wpf;
 using Services;
 using System.Configuration;
@@ -22,12 +23,13 @@ namespace FinanceManagementApp
     {
         public MainWindow()
         {
+            InitializeComponent();
         }
+
         private void OnSidebar_SelectionChanged(object sender, RoutedEventArgs e)
         {
             if (sender is UserSidebar sidebar && sidebar.SidebarListBox.SelectedItem is SampleItem selectedItem)
             {
-                // Xử lý theo từng mục
                 switch (selectedItem.Title)
                 {
                     case "Dashboard":
@@ -54,6 +56,5 @@ namespace FinanceManagementApp
                 }
             }
         }
-
     }
 }

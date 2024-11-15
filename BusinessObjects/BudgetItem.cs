@@ -1,4 +1,7 @@
-﻿namespace BusinessObjects;
+﻿using System;
+using System.Collections.Generic;
+
+namespace BusinessObjects;
 
 public partial class BudgetItem
 {
@@ -7,7 +10,7 @@ public partial class BudgetItem
     public int UserId { get; set; }
 
     public string? BudgetName { get; set; }
-    public int CurrentAmount { get; set; }
+    public int? CurrentAmount { get; set; } = 0;
 
     public int LimitAmount { get; set; }
 
@@ -24,7 +27,7 @@ public partial class BudgetItem
         }
     }
 
-    public string CurrentAmountStr => Util.Instance.FormatMoney(CurrentAmount);
+    public string CurrentAmountStr => Util.Instance.FormatMoney((int) CurrentAmount);
     public string LimitAmountStr => Util.Instance.FormatMoney((int)LimitAmount);
 
     public virtual User? User { get; set; }
