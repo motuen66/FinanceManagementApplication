@@ -5,6 +5,7 @@ namespace BusinessObjects.Models;
 
 public partial class SavingTransaction
 {
+    public int? id { get; set; }
     public int? UserId { get; set; }
 
     public int? SavingGoalId { get; set; }

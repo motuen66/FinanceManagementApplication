@@ -43,10 +43,10 @@ namespace FinanceManagementApp
         public void LoadList(int userId)
         {
             var GoalList = savingService.GetSavingGoals(userId);
-            isGoal.ItemsSource = GoalList;
             var CurrentGoal = savingService.GetSavingGoalById(userId);
             var monthlyExpenses = savingService.GetMonthlyExpenses(userId);
-            int? progessSavedPercent = (CurrentGoal.CurrentAmount / CurrentGoal.GoalAmount) * 100;
+            isGoal.ItemsSource = GoalList;
+            
 
             int countNotStarted = 0;
             int countInProgress = 0;
@@ -129,7 +129,7 @@ namespace FinanceManagementApp
                 savingGoal.Id = Int32.Parse(txtGoalId.Text);
                 savingGoal.Title = txtTitle.Text;
                 savingGoal.Description = txtUpdateDescription.Text;
-                savingGoal.CurrentAmount = 0;
+                savingGoal.CurrentAmount = Int32.Parse(txtUpdateCurentAmmount.Text);
                 savingGoal.GoalAmount = Int32.Parse(txtUpdateGoalAmmount.Text);
                 if(dpUpdateGoalDate.SelectedDate.HasValue)
                 {
@@ -150,6 +150,36 @@ namespace FinanceManagementApp
             }
         }
 
+        private void AddSavingTransaction_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SavingTransaction transaction = new SavingTransaction();
+                transaction.UserId = 1;
+                transaction.SavingGoalId = Int32.Parse(txtSavingGoalId.Text);
+                transaction.Note = txtTransactionNote.Text;
+                transaction.Amount = Int32.Parse(txtTransactionAmount.Text);
+                if (dpTransactionGoalDate.SelectedDate.HasValue)
+                {
+                    transaction.Date = DateOnly.FromDateTime(dpTransactionGoalDate.SelectedDate.Value);
+                }
+                else
+                {
+                    MessageBox.Show("Please select a valid transaction date");
+                    return;
+                }
+                savingService.CreateSavingTransaction(transaction);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error occur when adding new saving trasaction");
+            }
+            finally 
+            {
+                LoadList(1);
+            }
+        }
+
         private void btnUpSelectionChange(object sender, RoutedEventArgs e)
         {
             if (sender is System.Windows.Controls.Button button && button.Tag is SavingGoal savingGoal)
@@ -157,10 +187,19 @@ namespace FinanceManagementApp
                 txtGoalId.Text = savingGoal.Id.ToString();
                 txtTitle.Text = savingGoal.Title;
                 txtUpdateDescription.Text = savingGoal.Description;
+                txtUpdateCurentAmmount.Text = savingGoal.CurrentAmount.ToString();
                 txtUpdateGoalAmmount.Text = savingGoal.GoalAmount.ToString();
                 dpUpdateGoalDate.SelectedDate = savingGoal.GoalDate.HasValue
                                                 ? savingGoal.GoalDate.Value.ToDateTime(TimeOnly.MinValue)
                                                 : (DateTime?)null;
+            }
+        }
+
+        private void btnAddSelectionChange(Object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Button button && button.Tag is SavingGoal savingGoal)
+            {
+                txtSavingGoalId.Text= savingGoal.Id.ToString();
             }
         }
     }

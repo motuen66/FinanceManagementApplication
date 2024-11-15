@@ -23,15 +23,6 @@
 
         <local:UserHeader x:Name="userHeaderControl" Grid.ColumnSpan="2"/>
 
-        <!-- Định nghĩa các hàng -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="80" />
-            <!-- Row đầu tiên có chiều cao tự động -->
-            <RowDefinition Height="220" />
-            <!-- Row thứ hai cao 300 -->
-            <RowDefinition Height="360" />
-            <!-- Row thứ ba cao 300 -->
-        </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <TextBlock Text="Header Content" Grid.ColumnSpan="2" 
      HorizontalAlignment="Center" VerticalAlignment="Center" 
