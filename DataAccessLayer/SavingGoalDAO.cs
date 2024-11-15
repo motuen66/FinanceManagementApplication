@@ -87,7 +87,33 @@ namespace DataAccessLayer
             }
         }
 
-        public static int? GetCurrentTotalSavingAmount(int userId, DateTime date)
+        public static List<MonthlyExpense> GetMonthlyExpenses(int userId)
+        {
+            try
+            {
+                using var context = new FinanceManagementApplicationContext();
+                var currentDate = DateOnly.FromDateTime(DateTime.Now); // Convert DateTime to DateOnly for comparison
+
+                var monthlyExpenses = context.SavingGoals
+                    .Where(sg => sg.UserId == userId && sg.GoalDate.HasValue && sg.GoalDate.Value <= currentDate)
+                    .GroupBy(sg => sg.GoalDate.Value.Month)
+                    .Select(g => new MonthlyExpense
+                    {
+                        Month = g.Key,
+                        TotalCurrentAmount = g.Sum(sg => sg.CurrentAmount ?? 0)
+                    })
+                    .OrderBy(me => me.Month)
+                    .ToList();
+
+                return monthlyExpenses;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving monthly expenses.", ex);
+            }
+        }
+
+      public static int? GetCurrentTotalSavingAmount(int userId, DateTime date)
         {
             var context = new FinanceManagementApplicationContext();
             DateTime startOfMonth = new DateTime(date.Year, date.Month, 1);
@@ -128,6 +154,5 @@ namespace DataAccessLayer
                 };
             }
         }
-
     }
 }

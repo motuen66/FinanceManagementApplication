@@ -9,6 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="878" d:DesignWidth="1496">
     <Grid>
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -380,6 +381,7 @@ FontWeight="DemiBold"/>
                 </Grid>
             </Grid>
         </Grid>
+
         <materialDesign:DialogHost x:Name="AddNewBudget" >
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel Margin="40">
@@ -397,7 +399,6 @@ FontWeight="DemiBold"/>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
         
-         
         <materialDesign:DialogHost x:Name="UpdateBudget" >
             <materialDesign:DialogHost.DialogContent>
               
@@ -416,6 +417,5 @@ FontWeight="DemiBold"/>
 
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
-
     </Grid>
 </UserControl>
